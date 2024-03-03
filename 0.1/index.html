@@ -1,0 +1,2589 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://PYEEDM.github.io/glyphtune/0.1/index.html">
+      
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+    
+    
+      
+        <title>glyphtune docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="https://unpkg.com/iframe-worker/shim"></script>
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#glyphtune_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="glyphtune docs" class="md-header__button md-logo" aria-label="glyphtune docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            glyphtune docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              glyphtune
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PYEEDM/glyphtune" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="glyphtune docs" class="md-nav__button md-logo" aria-label="glyphtune docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    glyphtune docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PYEEDM/glyphtune" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    glyphtune
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="index.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    glyphtune
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#glyphtune" class="md-nav__link">
+    <span class="md-ellipsis">
+      glyphtune
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glyphtune.waveforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      waveforms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="waveforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Waveform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Waveform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Waveform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Waveform.sample_arr" class="md-nav__link">
+    <span class="md-ellipsis">
+      sample_arr
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Waveform.sample_seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      sample_seconds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Waveform.sample_samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      sample_samples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.OperationWaveform" class="md-nav__link">
+    <span class="md-ellipsis">
+      OperationWaveform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OperationWaveform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.OperationWaveform.operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.OperationWaveform.operands" class="md-nav__link">
+    <span class="md-ellipsis">
+      operands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.OperationWaveform.operator_kwargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      operator_kwargs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.OperationWaveform.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PeriodicWave" class="md-nav__link">
+    <span class="md-ellipsis">
+      PeriodicWave
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PeriodicWave">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PeriodicWave.frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PeriodicWave.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Sine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Sawtooth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sawtooth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Pulse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulse
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pulse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Pulse.duty_cycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      duty_cycle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Pulse.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Square" class="md-nav__link">
+    <span class="md-ellipsis">
+      Square
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Square">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Square.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Triangle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Triangle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Triangle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Triangle.rising_part" class="md-nav__link">
+    <span class="md-ellipsis">
+      rising_part
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.Triangle.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.DerivativeWaveform" class="md-nav__link">
+    <span class="md-ellipsis">
+      DerivativeWaveform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DerivativeWaveform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.DerivativeWaveform.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.IntegralWaveform" class="md-nav__link">
+    <span class="md-ellipsis">
+      IntegralWaveform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IntegralWaveform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.IntegralWaveform.input_waveform" class="md-nav__link">
+    <span class="md-ellipsis">
+      input_waveform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.IntegralWaveform.dynamic_offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      dynamic_offset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.IntegralWaveform.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.IntegralWaveform.reset_offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      reset_offset
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PhaseModulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      PhaseModulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PhaseModulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PhaseModulation.carrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      carrier
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PhaseModulation.modulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      modulator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.PhaseModulation.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.phase_modulate" class="md-nav__link">
+    <span class="md-ellipsis">
+      phase_modulate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.amplitude_modulate" class="md-nav__link">
+    <span class="md-ellipsis">
+      amplitude_modulate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.ring_modulate" class="md-nav__link">
+    <span class="md-ellipsis">
+      ring_modulate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.waveforms.frequency_modulate" class="md-nav__link">
+    <span class="md-ellipsis">
+      frequency_modulate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glyphtune.output" class="md-nav__link">
+    <span class="md-ellipsis">
+      output
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.output.MonoStream" class="md-nav__link">
+    <span class="md-ellipsis">
+      MonoStream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MonoStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.output.MonoStream.sampling_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      sampling_rate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.output.MonoStream.buffer_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      buffer_size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.output.MonoStream.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glyphtune.output.MonoStream.stream_waveform" class="md-nav__link">
+    <span class="md-ellipsis">
+      stream_waveform
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="glyphtune_1">glyphtune<a class="headerlink" href="#glyphtune_1" title="Permanent link">&para;</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="glyphtune" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>          <code>glyphtune</code>
+
+
+<a href="#glyphtune" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-contents first">
+  
+      <p>glyphtune is in pre-alpha, and so is this documentation.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="glyphtune.waveforms" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>          <code>glyphtune.waveforms</code>
+
+
+<a href="#glyphtune.waveforms" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-contents first">
+  
+      <p>A hierarchy of classes for creating waveforms and sampling them into arrays of audio data.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.Waveform" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>Waveform</code>
+
+
+<a href="#glyphtune.waveforms.Waveform" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="numpy.lib.mixins.NDArrayOperatorsMixin">NDArrayOperatorsMixin</span></code></p>
+
+  
+      <p>Base class representing waveforms.</p>
+<p>Waveform objects do not store any audio data. Instead, they must generate that data when
+one of their sampling functions is called.</p>
+<p>Waveform objects can be used as operands with Python operators and as inputs to NumPy functions
+along with other waveforms and numbers. This returns a
+<a class="autorefs autorefs-internal" href="#glyphtune.waveforms.OperationWaveform"><code>waveforms.OperationWaveform</code></a>.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.Waveform.sample_arr" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">sample_arr</span><span class="p">(</span><span class="n">time_array</span><span class="p">:</span> <span class="n">glyphtune</span><span class="o">.</span><span class="n">FloatArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">glyphtune</span><span class="o">.</span><span class="n">FloatArray</span></code>
+
+<a href="#glyphtune.waveforms.Waveform.sample_arr" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns an array containing the sampled signal of the waveform.</p>
+<p>The returned array will contain the same number of values as <code>time_array</code>.
+Each value in the returned array is the sample of the waveform's signal at the
+corresponding time value (in seconds) in <code>time_array</code>.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>time_array</code></b>
+            (<code><span title="glyphtune.FloatArray">FloatArray</span></code>)
+        –
+        <div class="doc-md-description">
+          <p>an array containing the values of the time variable at each sample point.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.Waveform.sample_seconds" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">sample_seconds</span><span class="p">(</span><span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">start_offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">glyphtune</span><span class="o">.</span><span class="n">FloatArray</span></code>
+
+<a href="#glyphtune.waveforms.Waveform.sample_seconds" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns an array containing the sampled signal of the waveform.</p>
+<p>The returned array will contain <code>ceil(sampling_rate*duration)</code> samples.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>sampling_rate</code></b>
+            (<code>int</code>)
+        –
+        <div class="doc-md-description">
+          <p>the sampling rate to use in samples per second.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>duration</code></b>
+            (<code>float</code>)
+        –
+        <div class="doc-md-description">
+          <p>the duration of time to be sampled in seconds.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>start_offset</code></b>
+            (<code>float</code>, default:
+                <code>0</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>the starting offset in seconds.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.Waveform.sample_samples" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">sample_samples</span><span class="p">(</span><span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">start_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">glyphtune</span><span class="o">.</span><span class="n">FloatArray</span></code>
+
+<a href="#glyphtune.waveforms.Waveform.sample_samples" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns an array containing the sampled signal of the waveform.</p>
+<p>The returned array will contain <code>count</code> samples.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>sampling_rate</code></b>
+            (<code>int</code>)
+        –
+        <div class="doc-md-description">
+          <p>the sampling rate to use in samples per second.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>count</code></b>
+            (<code>int</code>)
+        –
+        <div class="doc-md-description">
+          <p>the number of samples to take.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>start_offset</code></b>
+            (<code>int</code>, default:
+                <code>0</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>the starting offset in samples.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.OperationWaveform" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>OperationWaveform</code>
+
+
+<a href="#glyphtune.waveforms.OperationWaveform" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code></p>
+
+  
+      <p>Waveform that is the result of an operation on other waveforms and numbers.</p>
+<p>"lazily" samples audio by recursively sampling the operands as needed and applying the
+operator on the resulting audio data. The operands may be waveforms or scalar values.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.OperationWaveform.operator" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">operator</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.OperationWaveform.operator" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The operator of this waveform.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.OperationWaveform.operands" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">operands</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Waveform</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.OperationWaveform.operands" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>A copy of the operands of this waveform.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.OperationWaveform.operator_kwargs" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">operator_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.OperationWaveform.operator_kwargs" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>A copy of the keyword arguments this waveform passes to its operator when sampled.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.OperationWaveform.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">operator</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">*</span><span class="n">operands</span><span class="p">:</span> <span class="n">Waveform</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="o">**</span><span class="n">operator_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span></code>
+
+<a href="#glyphtune.waveforms.OperationWaveform.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes an operation waveform with operands and operator information.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>operator</code></b>
+            (<code><span title="typing.Callable">Callable</span>[..., <span title="typing.Any">Any</span>]</code>)
+        –
+        <div class="doc-md-description">
+          <p>the operator to use on the (sampled) operands when the waveform is sampled.
+The operator should take float arrays/numbers as input and return a float array.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>*operands</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a> | float</code>, default:
+                <code>()</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>operands whose (sampled) output is passed to the operator when the waveform
+is sampled.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>**operator_kwargs</code></b>
+            (<code><span title="typing.Any">Any</span></code>, default:
+                <code>{}</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>keyword arguments to pass to <code>operator</code> when the waveform is sampled.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.PeriodicWave" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>PeriodicWave</code>
+
+
+<a href="#glyphtune.waveforms.PeriodicWave" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code></p>
+
+  
+      <p>Periodic wave base class.</p>
+
+
+
+  <p>Attributes:</p>
+  <ul>
+      <li class="field-body">
+        <b><code><span title="glyphtune.waveforms.PeriodicWave.phase">phase</span></code></b>
+        –
+        <div class="doc-md-description">
+          <p>initial phase offset of the periodic wave as a ratio of the period.</p>
+        </div>
+      </li>
+  </ul>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.PeriodicWave.frequency" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.PeriodicWave.frequency" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Frequency of the periodic wave in Hz.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.PeriodicWave.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">phase</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#glyphtune.waveforms.PeriodicWave.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a periodic wave.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>frequency</code></b>
+            (<code>float</code>)
+        –
+        <div class="doc-md-description">
+          <p>frequency of the periodic wave in Hz.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>phase</code></b>
+            (<code>float</code>, default:
+                <code>0</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>initial phase offset of the periodic wave as a ratio of the period.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.Sine" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>Sine</code>
+
+
+<a href="#glyphtune.waveforms.Sine" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code></p>
+
+  
+      <p>Waveform with a sine shape.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.Sawtooth" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>Sawtooth</code>
+
+
+<a href="#glyphtune.waveforms.Sawtooth" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code></p>
+
+  
+      <p>Waveform with a sawtooth shape.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.Pulse" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>Pulse</code>
+
+
+<a href="#glyphtune.waveforms.Pulse" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code></p>
+
+  
+      <p>Waveform with a pulse shape.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.Pulse.duty_cycle" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">duty_cycle</span><span class="p">:</span> <span class="nb">float</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.Pulse.duty_cycle" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The fraction of one period in which the signal is high.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.Pulse.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">phase</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">duty_cycle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.Pulse.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a pulse wave.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>frequency</code></b>
+            (<code>float</code>)
+        –
+        <div class="doc-md-description">
+          <p>frequency of the pulse wave in Hz.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>phase</code></b>
+            (<code>float</code>, default:
+                <code>0</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>initial phase offset as a ratio of the period.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>duty_cycle</code></b>
+            (<code>float</code>, default:
+                <code>0.5</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>the fraction of one period in which the signal is high.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.Square" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>Square</code>
+
+
+<a href="#glyphtune.waveforms.Square" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.Pulse" href="#glyphtune.waveforms.Pulse">Pulse</a></code></p>
+
+  
+      <p>Waveform with a square shape.</p>
+<p>Special case of a pulse wave where the duty cycle is equal to 0.5.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.Square.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">phase</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.Square.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a square wave.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>frequency</code></b>
+            (<code>float</code>)
+        –
+        <div class="doc-md-description">
+          <p>frequency of the square wave in Hz.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>phase</code></b>
+            (<code>float</code>, default:
+                <code>0</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>initial phase offset as a ratio of the period.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.Triangle" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>Triangle</code>
+
+
+<a href="#glyphtune.waveforms.Triangle" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code></p>
+
+  
+      <p>Waveform with a triangle shape.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.Triangle.rising_part" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">rising_part</span><span class="p">:</span> <span class="nb">float</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.Triangle.rising_part" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The fraction of one period in which the signal is rising.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.Triangle.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">phase</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rising_part</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.Triangle.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a triangle wave.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>frequency</code></b>
+            (<code>float</code>)
+        –
+        <div class="doc-md-description">
+          <p>frequency of the square wave in Hz.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>phase</code></b>
+            (<code>float</code>, default:
+                <code>0</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>initial phase offset as a ratio of the period.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>rising_part</code></b>
+            (<code>float</code>, default:
+                <code>0.5</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>the fraction of one period in which the signal is rising.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.DerivativeWaveform" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>DerivativeWaveform</code>
+
+
+<a href="#glyphtune.waveforms.DerivativeWaveform" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code></p>
+
+  
+      <p>A waveform that is the derivative of another waveform.</p>
+
+
+
+  <p>Attributes:</p>
+  <ul>
+      <li class="field-body">
+        <b><code><span title="glyphtune.waveforms.DerivativeWaveform.input_waveform">input_waveform</span></code></b>
+        –
+        <div class="doc-md-description">
+          <p>waveform being differentiated.</p>
+        </div>
+      </li>
+  </ul>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.DerivativeWaveform.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">input_waveform</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.DerivativeWaveform.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a derivative waveform.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>input_waveform</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>waveform to differentiate.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.IntegralWaveform" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>IntegralWaveform</code>
+
+
+<a href="#glyphtune.waveforms.IntegralWaveform" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code></p>
+
+  
+      <p>A waveform that is the integral of another waveform.</p>
+<p>Can use dynamic offset; When enabled, the integral waveform will store the last value of the
+integral computed by <a class="autorefs autorefs-internal" href="#glyphtune.waveforms.Waveform.sample_arr"><code>IntegralWaveform.sample_arr</code></a>
+and offset the next result by it. This is useful for integrating waveforms in consecutive
+chunks without losing continuity.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.IntegralWaveform.input_waveform" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">input_waveform</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.IntegralWaveform.input_waveform" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Waveform being integrated.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.IntegralWaveform.dynamic_offset" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">dynamic_offset</span><span class="p">:</span> <span class="nb">bool</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.IntegralWaveform.dynamic_offset" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Whether this integral waveform uses dynamic offset
+(see <a class="autorefs autorefs-internal" href="#glyphtune.waveforms.IntegralWaveform"><code>IntegralWaveform</code></a> for info)</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.IntegralWaveform.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">input_waveform</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">,</span> <span class="n">dynamic_offset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.IntegralWaveform.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes an integral waveform.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>input_waveform</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>waveform to integrate.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>dynamic_offset</code></b>
+            (<code>bool</code>, default:
+                <code>True</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>whether to use dynamic offset
+(see <a class="autorefs autorefs-internal" href="#glyphtune.waveforms.IntegralWaveform"><code>IntegralWaveform</code></a> for info).</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.IntegralWaveform.reset_offset" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">reset_offset</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.IntegralWaveform.reset_offset" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Resets the dynamic offset to the initial value of 0.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.waveforms.PhaseModulation" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>PhaseModulation</code>
+
+
+<a href="#glyphtune.waveforms.PhaseModulation" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code></p>
+
+  
+      <p>Modulates a periodic wave's phase/frequency by another waveform's amplitude.</p>
+
+
+
+  <p>Attributes:</p>
+  <ul>
+      <li class="field-body">
+        <b><code><span title="glyphtune.waveforms.PhaseModulation.frequency_modulation">frequency_modulation</span></code></b>
+        –
+        <div class="doc-md-description">
+          <p>whether the frequency of the carrier will be modulated
+rather than the phase.</p>
+        </div>
+      </li>
+  </ul>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.PhaseModulation.carrier" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">carrier</span><span class="p">:</span> <span class="n">periodic_waves</span><span class="o">.</span><span class="n">PeriodicWave</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.PhaseModulation.carrier" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The periodic carrier of the modulation.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.waveforms.PhaseModulation.modulator" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">modulator</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.waveforms.PhaseModulation.modulator" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The modulator waveform.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.waveforms.PhaseModulation.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">carrier</span><span class="p">:</span> <span class="n">periodic_waves</span><span class="o">.</span><span class="n">PeriodicWave</span><span class="p">,</span> <span class="n">modulator</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">,</span> <span class="n">frequency_modulation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.waveforms.PhaseModulation.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a phase modulation waveform.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>carrier</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>the periodic wave whose phase/frequency will be modulated.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>modulator</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>the waveform used for the modulation.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>frequency_modulation</code></b>
+            (<code>bool</code>, default:
+                <code>False</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>whether the frequency of the carrier will be modulated rather
+than the phase.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="glyphtune.waveforms.phase_modulate" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">phase_modulate</span><span class="p">(</span><span class="n">carrier</span><span class="p">:</span> <span class="n">periodic_waves</span><span class="o">.</span><span class="n">PeriodicWave</span><span class="p">,</span> <span class="o">*</span><span class="n">modulators</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span></code>
+
+<a href="#glyphtune.waveforms.phase_modulate" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns a waveform resulting from phase modulation.</p>
+<p>The carrier's phase is shifted according to the amplitude of the sum of the modulators.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>carrier</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>the periodic carrier waveform.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>*modulators</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>, default:
+                <code>()</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>any number of modulator waveforms.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="glyphtune.waveforms.amplitude_modulate" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">amplitude_modulate</span><span class="p">(</span><span class="n">carrier</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">,</span> <span class="o">*</span><span class="n">modulators</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span></code>
+
+<a href="#glyphtune.waveforms.amplitude_modulate" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns a waveform resulting from amplitude modulation.</p>
+<p>The carrier's amplitude is shifted according to the amplitude of the sum of the modulators.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>carrier</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>the carrier waveform.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>*modulators</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>, default:
+                <code>()</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>any number of modulator waveforms.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="glyphtune.waveforms.ring_modulate" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">ring_modulate</span><span class="p">(</span><span class="n">carrier</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">,</span> <span class="o">*</span><span class="n">modulators</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span></code>
+
+<a href="#glyphtune.waveforms.ring_modulate" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns a waveform resulting from ring modulation.</p>
+<p>The carrier's amplitude is multiplied by the amplitude of the product of the modulators.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>carrier</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>the carrier waveform.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>*modulators</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>, default:
+                <code>()</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>any number of modulator waveforms.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="glyphtune.waveforms.frequency_modulate" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>          <code class="highlight language-python"><span class="n">frequency_modulate</span><span class="p">(</span><span class="n">carrier</span><span class="p">:</span> <span class="n">periodic_waves</span><span class="o">.</span><span class="n">PeriodicWave</span><span class="p">,</span> <span class="o">*</span><span class="n">modulators</span><span class="p">:</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">waveform</span><span class="o">.</span><span class="n">Waveform</span></code>
+
+<a href="#glyphtune.waveforms.frequency_modulate" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns a waveform resulting from frequency modulation.</p>
+<p>The carrier's phase is shifted according to the amplitude of the integral of the sum of the
+modulators.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>carrier</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.periodic_waves.PeriodicWave" href="#glyphtune.waveforms.PeriodicWave">PeriodicWave</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>the periodic carrier waveform.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>*modulators</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.waveform.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>, default:
+                <code>()</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>any number of modulator waveforms.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="glyphtune.output" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>          <code>glyphtune.output</code>
+
+
+<a href="#glyphtune.output" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-contents first">
+  
+      <p>Audio output.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="glyphtune.output.MonoStream" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>          <code>MonoStream</code>
+
+
+<a href="#glyphtune.output.MonoStream" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Audio stream with mono output.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.output.MonoStream.sampling_rate" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">int</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.output.MonoStream.sampling_rate" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Sampling rate of the output stream.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="glyphtune.output.MonoStream.buffer_size" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>          <code class="highlight language-python"><span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#glyphtune.output.MonoStream.buffer_size" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Buffer size of the output stream.</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.output.MonoStream.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">sampling_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">44100</span><span class="p">,</span> <span class="n">buffer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.output.MonoStream.__init__" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes a mono audio stream.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>sampling_rate</code></b>
+            (<code>int</code>, default:
+                <code>44100</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>the sampling rate to use in samples per second.</p>
+        </div>
+      </li>
+      <li class="field-body">
+        <b><code>buffer_size</code></b>
+            (<code>int</code>, default:
+                <code>512</code>
+)
+        –
+        <div class="doc-md-description">
+          <p>the size of chunks to be streamed in samples.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="glyphtune.output.MonoStream.stream_waveform" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>          <code class="highlight language-python"><span class="n">stream_waveform</span><span class="p">(</span><span class="n">waveform</span><span class="p">:</span> <span class="n">waveforms</span><span class="o">.</span><span class="n">Waveform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+<a href="#glyphtune.output.MonoStream.stream_waveform" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Stream a waveform until <code>SystemExit</code> or <code>KeyboardInterrupt</code> is raised.</p>
+
+
+
+  <p>Parameters:</p>
+  <ul>
+      <li class="field-body">
+        <b><code>waveform</code></b>
+            (<code><a class="autorefs autorefs-internal" title="glyphtune.waveforms.Waveform" href="#glyphtune.waveforms.Waveform">Waveform</a></code>)
+        –
+        <div class="doc-md-description">
+          <p>waveform to be streamed.</p>
+        </div>
+      </li>
+  </ul>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">March 3, 2024 11:14:18</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">March 3, 2024 11:14:18</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.top", "navigation.sections", "header.autohide", "toc.integrate", "search.suggest", "search.highlight"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      
+    
+  </body>
+</html>
