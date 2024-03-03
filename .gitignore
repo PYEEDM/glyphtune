@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.mypy_cache/
+.tox
+.pytest_cache/
+.coverage
+
+src/_glyphtune_version.py
+
+docs/site

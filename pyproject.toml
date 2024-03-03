@@ -1,0 +1,91 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "glyphtune"
+dynamic = ["version"]
+description = "Easy audio synthesis and manipulation in Python."
+authors = [{ name = "PYE", email = "pye.edm@gmail.com" }]
+requires-python = ">=3.12"
+license = "MIT"
+readme = "README.md"
+keywords = ["sound", "audio", "synthesizer", "synth", "synthesis"]
+classifiers = [
+    "Private :: Do Not Upload",
+
+    "Development Status :: 2 - Pre-Alpha",
+
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+
+    "License :: OSI Approved :: MIT License",
+
+    "Natural Language :: English",
+
+    "Operating System :: OS Independent",
+
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Sound/Audio :: Sound Synthesis",
+
+    "Typing :: Typed",
+]
+dependencies = ["numpy", "pyaudio"]
+
+
+[project.urls]
+Repository = "https://github.com/PYEEDM/glyphtune"
+
+
+[tool.hatch.version]
+source = "vcs"
+# Adapted Semantic Versiniong 2.0.0 RegEx (see https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string)
+tag-pattern = '^(?P<version>(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)$'
+
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/_glyphtune_version.py"
+
+
+[tool.pylint."MASTER"]
+ignore = "_glyphtune_version.py"
+
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = "fixme"
+
+
+[tool.mypy]
+strict = true
+mypy_path = "src/"
+install_types = true
+non_interactive = true
+
+
+[tool.pytest.ini_options]
+addopts = "--cov=glyphtune"
+
+
+[tool.coverage.report]
+show_missing = true
+
+
+[tool.tox]
+# Tox does not natively support pyproject.toml yet (see https://github.com/tox-dev/tox/issues/999)
+legacy_tox_ini = """
+[tox]
+envlist = py{312}
+
+[testenv]
+deps =
+    pytest
+    pytest-cov
+commands = pytest
+"""

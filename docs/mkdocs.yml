@@ -1,0 +1,58 @@
+strict: true
+docs_dir: src
+
+site_name: glyphtune docs
+site_url: https://PYEEDM.github.io/glyphtune/
+repo_url: https://github.com/PYEEDM/glyphtune
+
+theme:
+  name: "material"
+  features:
+    - navigation.top
+    - navigation.sections
+    - header.autohide
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - toc:
+      permalink: true
+
+plugins:
+  - offline
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+  - mike
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [../src]
+          options:
+            show_root_heading: true
+            show_symbol_type_heading: true
+            members_order: "source"
+            summary: true
+            docstring_section_style: "list"
+            show_signature_annotations: true
+            signature_crossrefs: true
+            show_source: false
+
+extra:
+  version:
+    provider: mike
