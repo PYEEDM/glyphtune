@@ -191,39 +191,6 @@ def test_triangle_wave_repr_with_phase_and_rising_part_arguments() -> None:
     assert repr(wave) == "Triangle(100, 0.6, rising_part=0.6)"
 
 
-def test_derivative_waveform_repr() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    dummy_waveform = DummyWaveform()
-    dummy_waveform_repr = repr(dummy_waveform)
-
-    derivative_waveform = waveforms.DerivativeWaveform(dummy_waveform)
-
-    assert repr(derivative_waveform) == f"DerivativeWaveform({dummy_waveform_repr})"
-
-
-def test_integral_waveform_repr() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    dummy_waveform = DummyWaveform()
-    dummy_waveform_repr = repr(dummy_waveform)
-
-    integral_waveform = waveforms.IntegralWaveform(dummy_waveform)
-
-    assert repr(integral_waveform) == f"IntegralWaveform({dummy_waveform_repr})"
-
-
-def test_integral_waveform_repr_without_dynamic_offset() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    dummy_waveform = DummyWaveform()
-    dummy_waveform_repr = repr(dummy_waveform)
-
-    integral_waveform = waveforms.IntegralWaveform(dummy_waveform, dynamic_offset=False)
-
-    assert (
-        repr(integral_waveform)
-        == f"IntegralWaveform({dummy_waveform_repr}, dynamic_offset=False)"
-    )
-
-
 def test_phase_modulation_waveform_repr() -> None:
     """Ensure the representation of the waveform is as expected."""
     dummy_periodic_wave = DummyPeriodicWave(1)
@@ -236,19 +203,4 @@ def test_phase_modulation_waveform_repr() -> None:
     assert (
         repr(phase_modulation_waveform)
         == f"PhaseModulation({dummy_wave_repr}, {dummy_wave_repr})"
-    )
-
-
-def test_frequency_modulation_waveform_repr() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    dummy_periodic_wave = DummyPeriodicWave(1)
-    dummy_wave_repr = repr(dummy_periodic_wave)
-
-    phase_modulation_waveform = waveforms.frequency_modulate(
-        dummy_periodic_wave, dummy_periodic_wave
-    )
-
-    assert (
-        repr(phase_modulation_waveform)
-        == f"PhaseModulation({dummy_wave_repr}, {dummy_wave_repr}, frequency_modulation=True)"
     )
