@@ -9,20 +9,16 @@ from glyphtune.waveforms.periodic_waves import (
     Square,
     Triangle,
 )
-from glyphtune.waveforms.calculus import DerivativeWaveform, IntegralWaveform
 from glyphtune.waveforms.modulation import (
     PhaseModulation,
     phase_modulate,
     amplitude_modulate,
     ring_modulate,
-    frequency_modulate,
 )
 
 __all__ = [
     "Waveform",
     "OperationWaveform",
-    "DerivativeWaveform",
-    "IntegralWaveform",
     "PeriodicWave",
     "Sine",
     "Sawtooth",
@@ -33,5 +29,4 @@ __all__ = [
     "phase_modulate",
     "amplitude_modulate",
     "ring_modulate",
-    "frequency_modulate",
 ]
