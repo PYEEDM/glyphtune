@@ -1,6 +1,6 @@
 """Effects manipulating the stereo field of the input."""
 
-from typing import override
+from typing import Any, override
 import numpy as np
 import glyphtune
 from glyphtune.waveforms import waveform
@@ -59,6 +59,20 @@ class StereoPan(effect.Effect):
         sampled_stereo_inter_mix = self.__stereo_inter_mix.apply(input_signal)
         return sampled_stereo_levels + sampled_stereo_inter_mix
 
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return (
+            super().__eq__(other)
+            and isinstance(other, StereoPan)
+            and self.__pan == other.pan
+        )
+
+    @override
+    def __repr__(self) -> str:
+        class_name = type(self).__name__
+        pan_repr = f", pan={self.__pan}" if self.__pan != 0 else ""
+        return f"{class_name}({self.input_waveform}{pan_repr}{self._mix_repr(1)})"
+
 
 class StereoLevels(effect.Effect):
     """An effect for setting each stereo channel's level independently.
@@ -96,6 +110,27 @@ class StereoLevels(effect.Effect):
         wet_signal: glyphtune.FloatArray
         wet_signal = input_signal * np.array([[self.left_level], [self.right_level]])
         return wet_signal
+
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return (
+            super().__eq__(other)
+            and isinstance(other, StereoLevels)
+            and self.left_level == other.left_level
+            and self.right_level == other.right_level
+        )
+
+    @override
+    def __repr__(self) -> str:
+        class_name = type(self).__name__
+        left_level_repr = (
+            f", left_level={self.left_level}" if self.left_level != 1 else ""
+        )
+        right_level_repr = (
+            f", right_level={self.right_level}" if self.right_level != 1 else ""
+        )
+        mix_repr = self._mix_repr(1)
+        return f"{class_name}({self.input_waveform}{left_level_repr}{right_level_repr}{mix_repr})"
 
 
 class StereoInterMix(effect.Effect):
@@ -138,6 +173,30 @@ class StereoInterMix(effect.Effect):
             ]
         )
         return wet_signal
+
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return (
+            super().__eq__(other)
+            and isinstance(other, StereoInterMix)
+            and self.right_to_left == other.right_to_left
+            and self.left_to_right == other.left_to_right
+        )
+
+    @override
+    def __repr__(self) -> str:
+        class_name = type(self).__name__
+        right_to_left_repr = (
+            f", right_to_left={self.right_to_left}" if self.right_to_left != 0 else ""
+        )
+        left_to_right_repr = (
+            f", left_to_right={self.left_to_right}" if self.left_to_right != 0 else ""
+        )
+        mix_repr = self._mix_repr(1)
+        args_repr = (
+            f"{self.input_waveform}{right_to_left_repr}{left_to_right_repr}{mix_repr}"
+        )
+        return f"{class_name}({args_repr})"
 
 
 class StereoDelay(effect.Effect):
@@ -190,3 +249,22 @@ class StereoDelay(effect.Effect):
             f"{type(self).__name__} cannot be applied directly and "
             "must be sampled using sample_dry_wet"
         )
+
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return (
+            super().__eq__(other)
+            and isinstance(other, StereoDelay)
+            and self.left_right_delay == other.left_right_delay
+        )
+
+    @override
+    def __repr__(self) -> str:
+        class_name = type(self).__name__
+        left_rught_delay_repr = (
+            f", left_right_delay={self.left_right_delay}"
+            if self.left_right_delay != 0
+            else ""
+        )
+        mix_repr = self._mix_repr(1)
+        return f"{class_name}({self.input_waveform}{left_rught_delay_repr}{mix_repr})"

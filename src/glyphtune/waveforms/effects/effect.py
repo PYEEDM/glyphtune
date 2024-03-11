@@ -1,8 +1,10 @@
 """Basic functionality of effects."""
 
-from typing import final, override
+from typing import Any, final, override
 import glyphtune
 from glyphtune.waveforms import waveform
+
+_DEFAULT_MIX = 0.5
 
 
 class Effect(waveform.Waveform):
@@ -12,7 +14,9 @@ class Effect(waveform.Waveform):
         input_waveform: the input waveform of the effect.
     """
 
-    def __init__(self, input_waveform: waveform.Waveform, mix: float = 0.5) -> None:
+    def __init__(
+        self, input_waveform: waveform.Waveform, mix: float = _DEFAULT_MIX
+    ) -> None:
         """Initializes an effect.
 
         Args:
@@ -76,3 +80,20 @@ class Effect(waveform.Waveform):
         raise NotImplementedError(
             f"Attempted to apply a base {type(self).__name__} object"
         )
+
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return (
+            isinstance(other, Effect)
+            and type(self) is type(other)
+            and self.input_waveform == other.input_waveform
+            and self.__mix == other.mix
+        )
+
+    @override
+    def __repr__(self) -> str:
+        class_name = type(self).__name__
+        return f"{class_name}({self.input_waveform}{self._mix_repr(_DEFAULT_MIX)})"
+
+    def _mix_repr(self, default: float) -> str:
+        return f", mix={self.__mix}" if self.__mix != default else ""
