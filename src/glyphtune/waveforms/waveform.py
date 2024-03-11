@@ -24,56 +24,76 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
     """
 
     def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
-        """Returns an array containing the sampled signal of the waveform.
-
-        The returned array will contain the same number of values as `time_array`.
-        Each value in the returned array is the sample of the waveform's signal at the
-        corresponding time value (in seconds) in `time_array`.
+        """Samples audio data given a time variable array.
 
         Args:
-            time_array: an array containing the values of the time variable at each sample point.
+            time_array: a 2d array of the shape `(channels, samples)` containing, for each channel,
+                the values of the time variable at each sample point.
+
+        Returns:
+            An array containing the sampled signal of the waveform.
+                The returned array will be of the same shape as `time_array`.
+                Each value in the returned array is the sample of the waveform's signal at the
+                corresponding time value (in seconds) for a particular channel in `time_array`.
         """
         raise NotImplementedError(
             f"Attempted to sample a base {type(self).__name__} object"
         )
 
     def sample_seconds(
-        self, sampling_rate: int, duration: float, start_offset: float = 0
+        self,
+        sampling_rate: int,
+        duration: float,
+        start_offset: float = 0,
+        channels: int = 2,
     ) -> glyphtune.FloatArray:
-        """Returns an array containing the sampled signal of the waveform.
-
-        The returned array will contain `ceil(sampling_rate*duration)` samples.
+        """Samples audio data given time information in seconds.
 
         Args:
             sampling_rate: the sampling rate to use in samples per second.
             duration: the duration of time to be sampled in seconds.
             start_offset: the starting offset in seconds.
+            channels: the number of channels to return.
+
+        Returns:
+            A 2d array containing the sampled signal of the waveform.
+                The returned array will have the shape `(channels, ceil(sampling_rate*duration))`,
+                containing `ceil(sampling_rate*duration)` samples for each channel.
         """
         if sampling_rate <= 0:
             raise ValueError("Sampling rate must be positive")
+        if channels <= 0:
+            raise ValueError("Number of channels must be positive")
         end = start_offset + duration
         sampling_period = 1 / sampling_rate
         time_array = np.arange(start_offset, end, sampling_period)
+        time_array = np.tile(time_array, (channels, 1))
         return self.sample_arr(time_array)
 
     def sample_samples(
-        self, sampling_rate: int, count: int, start_offset: int = 0
+        self, sampling_rate: int, count: int, start_offset: int = 0, channels: int = 2
     ) -> glyphtune.FloatArray:
-        """Returns an array containing the sampled signal of the waveform.
-
-        The returned array will contain `count` samples.
+        """Samples audio data given sample count information.
 
         Args:
             sampling_rate: the sampling rate to use in samples per second.
             count: the number of samples to take.
             start_offset: the starting offset in samples.
+            channels: the number of channels to return.
+
+        Returns:
+            A 2d array containing the sampled signal of the waveform.
+                The returned array will have the shape `(channels, count)`,
+                containing `count` samples for each channel.
         """
         if sampling_rate <= 0:
             raise ValueError("Sampling rate must be positive")
+        if channels <= 0:
+            raise ValueError("Number of channels must be positive")
         duration_seconds = count / sampling_rate
         start_offset_seconds = start_offset / sampling_rate
         return self.sample_seconds(
-            sampling_rate, duration_seconds, start_offset_seconds
+            sampling_rate, duration_seconds, start_offset_seconds, channels
         )
 
     def __array_ufunc__(
