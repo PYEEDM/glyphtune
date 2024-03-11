@@ -24,7 +24,7 @@ class Effect(waveform.Waveform):
 
     @property
     def mix(self) -> float:
-        """The portion of the output that will be "wet" Can be negative for inverted output."""
+        """The portion of the output that will be "wet". Can be negative for inverted output."""
         return self.__mix
 
     @mix.setter

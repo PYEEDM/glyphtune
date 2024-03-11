@@ -1,4 +1,4 @@
-"""Waveforms that are effects that can be applies on other waveforms."""
+"""Waveforms that are effects that can be applied on other waveforms."""
 
 from glyphtune.waveforms.effects.effect import Effect
 from glyphtune.waveforms.effects.stereo import (
