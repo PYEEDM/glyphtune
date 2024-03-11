@@ -22,7 +22,7 @@ class StereoPan(effect.Effect):
         """
         super().__init__(input_waveform, mix)
         self.__stereo_levels = StereoLevels(input_waveform)
-        self.__stereo_inter_mix = StereoInterMix(self.__stereo_levels)
+        self.__stereo_inter_mix = StereoInterMix(self.__stereo_levels, mix=1)
         self.pan = pan
 
     @property
@@ -133,9 +133,9 @@ class StereoInterMix(effect.Effect):
     def __init__(
         self,
         input_waveform: waveform.Waveform,
-        right_to_left: float = 0,
-        left_to_right: float = 0,
-        mix: float = 1,
+        right_to_left: float = 1,
+        left_to_right: float = 1,
+        mix: float = 0.5,
     ) -> None:
         """Initializes a stereo inter-mix effect.
 
@@ -176,12 +176,12 @@ class StereoInterMix(effect.Effect):
     def __repr__(self) -> str:
         class_name = type(self).__name__
         right_to_left_repr = _strings.optional_param_repr(
-            "right_to_left", 0, self.right_to_left
+            "right_to_left", 1, self.right_to_left
         )
         left_to_right_repr = _strings.optional_param_repr(
-            "left_to_right", 0, self.left_to_right
+            "left_to_right", 1, self.left_to_right
         )
-        mix_repr = self._mix_repr(1)
+        mix_repr = self._mix_repr(0.5)
         args_repr = (
             f"{self.input_waveform}{right_to_left_repr}{left_to_right_repr}{mix_repr}"
         )
