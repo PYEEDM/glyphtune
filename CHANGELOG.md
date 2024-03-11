@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `Waveform.sample_arr` is now expected to be able to take as an argument an array of the shape `(channels, samples)` and return an array of the same shape.
-- `Waveform.sample_seconds` and `Waveform.sample_samples` now accept a `channels` options and can sample multi-channel audio, returning arrays of the shape `(channels, samples)`.
+- `Waveform.sample_seconds` and `Waveform.sample_samples` now accept a `channels` option and can sample multi-channel audio, returning arrays of the shape `(channels, samples)`.
 - `Waveform.sample_seconds` and `Waveform.sample_samples` now sample stereo audio by default.
 - `PhaseModulation` no longer accepts the `frequency_modulation` option and is no longer able to perform frequency modulation.
 - `Square` objects no longer subclass `Pulse` and now subclass `PeriodicWave`.
