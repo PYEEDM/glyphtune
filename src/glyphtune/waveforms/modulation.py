@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-import glyphtune
+from glyphtune import arrays
 from glyphtune.waveforms import periodic_waves, waveform
 
 
@@ -38,7 +38,7 @@ class PhaseModulation(waveform.Waveform):
         self.__sinusoidal_carrier = isinstance(self.carrier, periodic_waves.Sine)
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         sampled_modulator = self.modulator.sample_arr(time_array)
         phase_modulation = sampled_modulator / self.carrier.frequency
         if self.__sinusoidal_carrier:

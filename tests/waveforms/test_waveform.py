@@ -4,15 +4,14 @@ from typing import override
 import math
 import numpy as np
 import pytest
-import glyphtune
-from glyphtune import waveforms
+from glyphtune import arrays, waveforms
 
 
 class TimeArrayWaveform(waveforms.Waveform):
     """Useless waveform that just returns the time array when sampled."""
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         return time_array
 
 

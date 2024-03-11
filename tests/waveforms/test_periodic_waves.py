@@ -2,11 +2,10 @@
 
 import numpy as np
 import pytest
-import glyphtune
-from glyphtune import waveforms
+from glyphtune import arrays, waveforms
 
 
-def _get_peak_frequency(signal: glyphtune.FloatArray, sampling_rate: int) -> float:
+def _get_peak_frequency(signal: arrays.FloatArray, sampling_rate: int) -> float:
     """Return the peak frequency of the given signal's spectrum.
 
     Args:

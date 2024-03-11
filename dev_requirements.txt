@@ -1,0 +1,8 @@
+# Development requirements
+pre-commit
+black
+pylint
+mypy
+pytest
+pytest-cov
+tox

@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-import glyphtune
+from glyphtune import _strings, arrays
 from glyphtune.waveforms import waveform
 
 
@@ -36,10 +36,23 @@ class PeriodicWave(waveform.Waveform):
         self.__frequency = value
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         return super().sample_arr(time_array)
 
-    def _to_local(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return (
+            isinstance(other, PeriodicWave)
+            and type(self) is type(other)
+            and self.__frequency == other.frequency
+            and self.phase == other.phase
+        )
+
+    @override
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self.frequency}{self._phase_repr()})"
+
+    def _to_local(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         """Returns local time array from a given time array.
 
         Equivalent to `self.frequency * time_array + self.phase`.
@@ -49,55 +62,29 @@ class PeriodicWave(waveform.Waveform):
         """
         return self.__frequency * time_array + self.phase
 
-    def _phase_repr(self) -> str:
-        return f", {self.phase}" if self.phase != 0 else ""
+    def _phase_repr(self, default_value: float = 0) -> str:
+        return _strings.optional_param_repr("phase", default_value, self.phase)
 
 
 class Sine(PeriodicWave):
     """Waveform with a sine shape."""
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
-        result: glyphtune.FloatArray = np.sin(2 * np.pi * self._to_local(time_array))
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
+        result: arrays.FloatArray = np.sin(2 * np.pi * self._to_local(time_array))
         return result
-
-    @override
-    def __eq__(self, other: Any) -> bool:
-        return (
-            isinstance(other, Sine)
-            and type(self) is type(other)
-            and self.__frequency == other.frequency
-            and self.phase == other.phase
-        )
-
-    @override
-    def __repr__(self) -> str:
-        return f"{type(self).__name__}({self.frequency}{self._phase_repr()})"
 
 
 class Sawtooth(PeriodicWave):
     """Waveform with a sawtooth shape."""
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         local_time_array = self._to_local(time_array)
-        result: glyphtune.FloatArray = 2 * (
+        result: arrays.FloatArray = 2 * (
             local_time_array - np.floor(local_time_array + 0.5)
         )
         return result
-
-    @override
-    def __eq__(self, other: Any) -> bool:
-        return (
-            isinstance(other, Sawtooth)
-            and type(self) is type(other)
-            and self.__frequency == other.frequency
-            and self.phase == other.phase
-        )
-
-    @override
-    def __repr__(self) -> str:
-        return f"{type(self).__name__}({self.frequency}{self._phase_repr()})"
 
 
 class Pulse(PeriodicWave):
@@ -128,9 +115,9 @@ class Pulse(PeriodicWave):
         self.__duty_cycle = value
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         local_time_array = self._to_local(time_array)
-        result: glyphtune.FloatArray = (
+        result: arrays.FloatArray = (
             2
             * (
                 np.floor(local_time_array)
@@ -144,9 +131,7 @@ class Pulse(PeriodicWave):
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, Pulse)
-            and type(self) is type(other)
-            and self.__frequency == other.frequency
-            and self.phase == other.phase
+            and super().__eq__(other)
             and self.__duty_cycle == other.duty_cycle
         )
 
@@ -154,30 +139,25 @@ class Pulse(PeriodicWave):
     def __repr__(self) -> str:
         class_name = type(self).__name__
         phase_repr = self._phase_repr()
-        duty_cycle_repr = (
-            f", duty_cycle={self.duty_cycle}" if self.duty_cycle != 0.5 else ""
+        duty_cycle_repr = _strings.optional_param_repr(
+            "duty_cycle", 0.5, self.__duty_cycle
         )
         return f"{class_name}({self.frequency}{phase_repr}{duty_cycle_repr})"
 
 
-class Square(Pulse):
+class Square(PeriodicWave):
     """Waveform with a square shape.
 
     Special case of a pulse wave where the duty cycle is equal to 0.5.
     """
 
-    def __init__(self, frequency: float, phase: float = 0) -> None:
-        """Initializes a square wave.
-
-        Args:
-            frequency: frequency of the square wave in Hz.
-            phase: initial phase offset as a ratio of the period.
-        """
-        super().__init__(frequency, phase)
-
     @override
-    def __repr__(self) -> str:
-        return f"{type(self).__name__}({self.frequency}{self._phase_repr()})"
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
+        local_time_array = self._to_local(time_array)
+        result: arrays.FloatArray = (
+            2 * (np.floor(local_time_array) - np.floor(local_time_array - 0.5)) - 1
+        )
+        return result
 
 
 class Triangle(PeriodicWave):
@@ -208,11 +188,11 @@ class Triangle(PeriodicWave):
         self.__rising_part = value
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         local_time_array = self._to_local(time_array)
         offset_time_array = local_time_array + self.__rising_part / 2
         sawtooth_signal = offset_time_array - np.floor(offset_time_array)
-        result: glyphtune.FloatArray = np.piecewise(
+        result: arrays.FloatArray = np.piecewise(
             sawtooth_signal,
             [sawtooth_signal <= self.__rising_part],
             [
@@ -226,9 +206,7 @@ class Triangle(PeriodicWave):
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, Triangle)
-            and type(self) is type(other)
-            and self.__frequency == other.frequency
-            and self.phase == other.phase
+            and super().__eq__(other)
             and self.__rising_part == other.rising_part
         )
 
@@ -236,7 +214,7 @@ class Triangle(PeriodicWave):
     def __repr__(self) -> str:
         class_name = type(self).__name__
         phase_repr = self._phase_repr()
-        rising_part_repr = (
-            f", rising_part={self.rising_part}" if self.rising_part != 0.5 else ""
+        rising_part_repr = _strings.optional_param_repr(
+            "rising_part", 0.5, self.__rising_part
         )
         return f"{class_name}({self.frequency}{phase_repr}{rising_part_repr})"
