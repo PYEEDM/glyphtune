@@ -2,12 +2,12 @@
 
 from typing import Any, override
 import numpy as np
-import glyphtune
+from glyphtune import _strings, arrays
 from glyphtune.waveforms import waveform
 from glyphtune.waveforms.effects import effect
 
 
-def is_stereo_signal(signal: glyphtune.FloatArray) -> bool:
+def is_stereo_signal(signal: arrays.FloatArray) -> bool:
     """Returns whether the given signal is stereo.
 
     Args:
@@ -50,7 +50,7 @@ class StereoPan(effect.Effect):
         self.__stereo_inter_mix.right_to_left = -min(value, 0)
 
     @override
-    def apply(self, input_signal: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
         if not is_stereo_signal(input_signal):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
@@ -70,7 +70,7 @@ class StereoPan(effect.Effect):
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        pan_repr = f", pan={self.__pan}" if self.__pan != 0 else ""
+        pan_repr = _strings.optional_param_repr("pan", 0, self.__pan)
         return f"{class_name}({self.input_waveform}{pan_repr}{self._mix_repr(1)})"
 
 
@@ -102,12 +102,12 @@ class StereoLevels(effect.Effect):
         self.right_level = right_level
 
     @override
-    def apply(self, input_signal: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
         if not is_stereo_signal(input_signal):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        wet_signal: glyphtune.FloatArray
+        wet_signal: arrays.FloatArray
         wet_signal = input_signal * np.array([[self.left_level], [self.right_level]])
         return wet_signal
 
@@ -123,11 +123,9 @@ class StereoLevels(effect.Effect):
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        left_level_repr = (
-            f", left_level={self.left_level}" if self.left_level != 1 else ""
-        )
-        right_level_repr = (
-            f", right_level={self.right_level}" if self.right_level != 1 else ""
+        left_level_repr = _strings.optional_param_repr("left_level", 1, self.left_level)
+        right_level_repr = _strings.optional_param_repr(
+            "right_level", 1, self.right_level
         )
         mix_repr = self._mix_repr(1)
         return f"{class_name}({self.input_waveform}{left_level_repr}{right_level_repr}{mix_repr})"
@@ -161,12 +159,12 @@ class StereoInterMix(effect.Effect):
         self.left_to_right = left_to_right
 
     @override
-    def apply(self, input_signal: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
         if not is_stereo_signal(input_signal):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        wet_signal: glyphtune.FloatArray = np.array(
+        wet_signal: arrays.FloatArray = np.array(
             [
                 self.right_to_left * input_signal[1],
                 self.left_to_right * input_signal[0],
@@ -186,11 +184,11 @@ class StereoInterMix(effect.Effect):
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        right_to_left_repr = (
-            f", right_to_left={self.right_to_left}" if self.right_to_left != 0 else ""
+        right_to_left_repr = _strings.optional_param_repr(
+            "right_to_left", 0, self.right_to_left
         )
-        left_to_right_repr = (
-            f", left_to_right={self.left_to_right}" if self.left_to_right != 0 else ""
+        left_to_right_repr = _strings.optional_param_repr(
+            "left_to_right", 0, self.left_to_right
         )
         mix_repr = self._mix_repr(1)
         args_repr = (
@@ -228,8 +226,8 @@ class StereoDelay(effect.Effect):
 
     @override
     def sample_dry_wet(
-        self, time_array: glyphtune.FloatArray
-    ) -> tuple[glyphtune.FloatArray, glyphtune.FloatArray]:
+        self, time_array: arrays.FloatArray
+    ) -> tuple[arrays.FloatArray, arrays.FloatArray]:
         if not is_stereo_signal(time_array):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
@@ -244,7 +242,7 @@ class StereoDelay(effect.Effect):
         return dry_signal, wet_signal
 
     @override
-    def apply(self, input_signal: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
         raise NotImplementedError(
             f"{type(self).__name__} cannot be applied directly and "
             "must be sampled using sample_dry_wet"
@@ -261,10 +259,8 @@ class StereoDelay(effect.Effect):
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        left_rught_delay_repr = (
-            f", left_right_delay={self.left_right_delay}"
-            if self.left_right_delay != 0
-            else ""
+        left_right_delay_repr = _strings.optional_param_repr(
+            "left_right_delay", 0, self.left_right_delay
         )
         mix_repr = self._mix_repr(1)
-        return f"{class_name}({self.input_waveform}{left_rught_delay_repr}{mix_repr})"
+        return f"{class_name}({self.input_waveform}{left_right_delay_repr}{mix_repr})"

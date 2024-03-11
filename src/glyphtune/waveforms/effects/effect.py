@@ -1,10 +1,8 @@
 """Basic functionality of effects."""
 
 from typing import Any, final, override
-import glyphtune
+from glyphtune import _strings, arrays
 from glyphtune.waveforms import waveform
-
-_DEFAULT_MIX = 0.5
 
 
 class Effect(waveform.Waveform):
@@ -14,9 +12,7 @@ class Effect(waveform.Waveform):
         input_waveform: the input waveform of the effect.
     """
 
-    def __init__(
-        self, input_waveform: waveform.Waveform, mix: float = _DEFAULT_MIX
-    ) -> None:
+    def __init__(self, input_waveform: waveform.Waveform, mix: float = 0.5) -> None:
         """Initializes an effect.
 
         Args:
@@ -39,14 +35,14 @@ class Effect(waveform.Waveform):
 
     @override
     @final
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         dry_signal, wet_signal = self.sample_dry_wet(time_array)
         dry_mix = 1 - abs(self.mix)
         return dry_mix * dry_signal + self.__mix * wet_signal
 
     def sample_dry_wet(
-        self, time_array: glyphtune.FloatArray
-    ) -> tuple[glyphtune.FloatArray, glyphtune.FloatArray]:
+        self, time_array: arrays.FloatArray
+    ) -> tuple[arrays.FloatArray, arrays.FloatArray]:
         """Samples the dry and wet signals of the effect given a time variable array.
 
         Args:
@@ -63,7 +59,7 @@ class Effect(waveform.Waveform):
         wet_signal = self.apply(dry_signal)
         return dry_signal, wet_signal
 
-    def apply(self, input_signal: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
         """Applies the effect on the given input signal.
 
         Effects that can generate output by simply altering the input audio should only have to
@@ -93,7 +89,7 @@ class Effect(waveform.Waveform):
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        return f"{class_name}({self.input_waveform}{self._mix_repr(_DEFAULT_MIX)})"
+        return f"{class_name}({self.input_waveform}{self._mix_repr()})"
 
-    def _mix_repr(self, default: float) -> str:
-        return f", mix={self.__mix}" if self.__mix != default else ""
+    def _mix_repr(self, default_value: float = 0.5) -> str:
+        return _strings.optional_param_repr("mix", default_value, self.__mix)
