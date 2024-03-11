@@ -2,15 +2,14 @@
 
 from typing import override
 import numpy as np
-import glyphtune
-from glyphtune import waveforms
+from glyphtune import arrays, waveforms
 
 
 class DummyWaveform(waveforms.Waveform):
     """Useless waveform that always has a value of 1."""
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         return np.ones_like(time_array)
 
 
@@ -63,11 +62,11 @@ def test_custom_operation_waveform() -> None:
     """Ensure operation waveforms with a custom operation and operands return correct results."""
 
     def add_mod(
-        term1: glyphtune.FloatArray,
-        term2: glyphtune.FloatArray,
+        term1: arrays.FloatArray,
+        term2: arrays.FloatArray,
         *,
-        mod: glyphtune.FloatArray | float = 1,
-    ) -> glyphtune.FloatArray:
+        mod: arrays.FloatArray | float = 1,
+    ) -> arrays.FloatArray:
         return (term1 + term2) % mod
 
     sampling_rate = 10

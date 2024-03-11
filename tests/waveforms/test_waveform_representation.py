@@ -2,15 +2,14 @@
 
 from typing import override
 import numpy as np
-import glyphtune
-from glyphtune import waveforms
+from glyphtune import arrays, waveforms
 
 
 class DummyWaveform(waveforms.Waveform):
     """Useless waveform with a constant repr function."""
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         return super().sample_arr(time_array)
 
     @override
@@ -22,7 +21,7 @@ class DummyPeriodicWave(waveforms.PeriodicWave):
     """Useless waveform with a constant repr function."""
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         return super().sample_arr(time_array)
 
     @override
@@ -100,23 +99,23 @@ def test_operation_waveform_repr_with_operands_and_kwargs() -> None:
     assert repr(nonsensical_waveform) == reference_repr
 
 
+def test_periodic_wave_repr() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    wave = waveforms.PeriodicWave(100)
+
+    assert repr(wave) == "PeriodicWave(100)"
+
+
+def test_periodic_wave_repr_with_phase_argument() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    wave = waveforms.PeriodicWave(100, phase=0.3)
+
+    assert repr(wave) == "PeriodicWave(100, phase=0.3)"
+
+
 def test_sine_wave_repr() -> None:
     """Ensure the representation of the waveform is as expected."""
     wave = waveforms.Sine(100)
-
-    assert repr(wave) == "Sine(100)"
-
-
-def test_sine_wave_repr_with_phase_argument() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    wave = waveforms.Sine(100, phase=0.6)
-
-    assert repr(wave) == "Sine(100, 0.6)"
-
-
-def test_explicitly_specifying_default_phase_does_not_affect_repr() -> None:
-    """Ensure explicitly providing the default phase argument does not affect the representation."""
-    wave = waveforms.Sine(100, phase=0)
 
     assert repr(wave) == "Sine(100)"
 
@@ -135,25 +134,11 @@ def test_pulse_wave_repr() -> None:
     assert repr(wave) == "Pulse(100)"
 
 
-def test_pulse_wave_repr_with_phase_argument() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    wave = waveforms.Pulse(100, phase=0.6)
-
-    assert repr(wave) == "Pulse(100, 0.6)"
-
-
 def test_pulse_wave_repr_with_duty_cycle_argument() -> None:
     """Ensure the representation of the waveform is as expected."""
     wave = waveforms.Pulse(100, duty_cycle=0.6)
 
     assert repr(wave) == "Pulse(100, duty_cycle=0.6)"
-
-
-def test_pulse_wave_repr_with_phase_and_duty_cycle_arguments() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    wave = waveforms.Pulse(100, phase=0.6, duty_cycle=0.6)
-
-    assert repr(wave) == "Pulse(100, 0.6, duty_cycle=0.6)"
 
 
 def test_square_wave_repr() -> None:
@@ -170,25 +155,11 @@ def test_triangle_wave_repr() -> None:
     assert repr(wave) == "Triangle(100)"
 
 
-def test_triangle_wave_repr_with_phase_argument() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    wave = waveforms.Triangle(100, phase=0.6)
-
-    assert repr(wave) == "Triangle(100, 0.6)"
-
-
 def test_triangle_wave_repr_with_rising_part_argument() -> None:
     """Ensure the representation of the waveform is as expected."""
     wave = waveforms.Triangle(100, rising_part=0.6)
 
     assert repr(wave) == "Triangle(100, rising_part=0.6)"
-
-
-def test_triangle_wave_repr_with_phase_and_rising_part_arguments() -> None:
-    """Ensure the representation of the waveform is as expected."""
-    wave = waveforms.Triangle(100, phase=0.6, rising_part=0.6)
-
-    assert repr(wave) == "Triangle(100, 0.6, rising_part=0.6)"
 
 
 def test_phase_modulation_waveform_repr() -> None:
