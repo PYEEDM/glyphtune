@@ -17,14 +17,14 @@ class TimeArrayWaveform(waveforms.Waveform):
 
 
 def test_sample_seconds_creates_time_array_with_correct_length() -> None:
-    """Ensure `sample_seconds` creates time array with `ceil(sampling_rate * duration)` values."""
+    """Ensure `sample_seconds` creates time array with `ceil(sampling_rate * duration)` samples."""
     sampling_rate = 10
     duration = 1.4
     time_array_waveform = TimeArrayWaveform()
 
-    time_array = time_array_waveform.sample_seconds(sampling_rate, duration)
+    time_array = time_array_waveform.sample_seconds(sampling_rate, duration, channels=1)
 
-    assert len(time_array) == math.ceil(sampling_rate * duration)
+    assert time_array.shape[1] == math.ceil(sampling_rate * duration)
 
 
 def test_sample_seconds_creates_evenly_spaced_time_array() -> None:
@@ -33,9 +33,9 @@ def test_sample_seconds_creates_evenly_spaced_time_array() -> None:
     duration = 1.4
     time_array_waveform = TimeArrayWaveform()
 
-    time_array = time_array_waveform.sample_seconds(sampling_rate, duration)
+    time_array = time_array_waveform.sample_seconds(sampling_rate, duration, channels=1)
 
-    time_array_differences = np.diff(time_array)
+    time_array_differences = np.diff(time_array.squeeze())
     assert time_array_differences == pytest.approx(time_array_differences[0])
 
 
@@ -47,18 +47,18 @@ def test_sample_seconds_time_array_first_value_equals_offset() -> None:
     time_array_waveform = TimeArrayWaveform()
 
     time_array = time_array_waveform.sample_seconds(
-        sampling_rate, duration, start_offset
+        sampling_rate, duration, start_offset, channels=1
     )
 
-    assert time_array[0] == start_offset
+    assert time_array[0, 0] == start_offset
 
 
 def test_sample_samples_creates_time_array_with_correct_length() -> None:
-    """Ensure `sample_samples` creates a time array with `count` values."""
+    """Ensure `sample_samples` creates a time array with `count` samples."""
     sampling_rate = 7
     count = 10
     time_array_waveform = TimeArrayWaveform()
 
-    time_array = time_array_waveform.sample_samples(sampling_rate, count)
+    time_array = time_array_waveform.sample_samples(sampling_rate, count, channels=1)
 
-    assert len(time_array) == count
+    assert time_array.shape[1] == count
