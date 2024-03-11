@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any, Callable, Literal, override
 import copy
 import numpy as np
-import glyphtune
+from glyphtune import arrays
 
 
 class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
@@ -23,7 +23,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
     [`waveforms.OperationWaveform`][glyphtune.waveforms.OperationWaveform].
     """
 
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         """Returns an array containing the sampled signal of the waveform.
 
         The returned array will contain the same number of values as `time_array`.
@@ -39,7 +39,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
 
     def sample_seconds(
         self, sampling_rate: int, duration: float, start_offset: float = 0
-    ) -> glyphtune.FloatArray:
+    ) -> arrays.FloatArray:
         """Returns an array containing the sampled signal of the waveform.
 
         The returned array will contain `ceil(sampling_rate*duration)` samples.
@@ -58,7 +58,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
 
     def sample_samples(
         self, sampling_rate: int, count: int, start_offset: int = 0
-    ) -> glyphtune.FloatArray:
+    ) -> arrays.FloatArray:
         """Returns an array containing the sampled signal of the waveform.
 
         The returned array will contain `count` samples.
@@ -118,7 +118,7 @@ class OperationWaveform(Waveform):
         super().__init__()
         self.__operator = operator
         self.__operands = operands
-        self._operator_kwargs = operator_kwargs
+        self.__operator_kwargs = operator_kwargs
 
     @property
     def operator(self) -> Callable[..., Any]:
@@ -133,10 +133,10 @@ class OperationWaveform(Waveform):
     @property
     def operator_kwargs(self) -> dict[str, Any]:
         """A copy of the keyword arguments this waveform passes to its operator when sampled."""
-        return copy.copy(self._operator_kwargs)
+        return copy.copy(self.__operator_kwargs)
 
     @override
-    def sample_arr(self, time_array: glyphtune.FloatArray) -> glyphtune.FloatArray:
+    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         sampled_operands = tuple(
             (
                 operand.sample_arr(time_array)
@@ -145,7 +145,7 @@ class OperationWaveform(Waveform):
             )
             for operand in self.__operands
         )
-        result = self.__operator(*sampled_operands, **self._operator_kwargs)
+        result = self.__operator(*sampled_operands, **self.__operator_kwargs)
         if not isinstance(result, np.ndarray):
             raise TypeError("Operator did not return an array")
         return result
@@ -157,7 +157,7 @@ class OperationWaveform(Waveform):
             and type(self) is type(other)
             and self.__operator == other.operator
             and self.__operands == other.operands
-            and self._operator_kwargs == other.operator_kwargs
+            and self.__operator_kwargs == other.operator_kwargs
         )
 
     @override
