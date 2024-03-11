@@ -7,15 +7,6 @@ from glyphtune.waveforms import waveform
 from glyphtune.waveforms.effects import effect
 
 
-def is_stereo_signal(signal: arrays.FloatArray) -> bool:
-    """Returns whether the given signal is stereo.
-
-    Args:
-        signal: input signal array.
-    """
-    return len(signal.shape) == 2 and signal.shape[0] == 2
-
-
 class StereoPan(effect.Effect):
     """Stereo pan effect."""
 
@@ -51,7 +42,7 @@ class StereoPan(effect.Effect):
 
     @override
     def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
-        if not is_stereo_signal(input_signal):
+        if not arrays.is_stereo_signal(input_signal):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
@@ -103,7 +94,7 @@ class StereoLevels(effect.Effect):
 
     @override
     def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
-        if not is_stereo_signal(input_signal):
+        if not arrays.is_stereo_signal(input_signal):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
@@ -160,7 +151,7 @@ class StereoInterMix(effect.Effect):
 
     @override
     def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
-        if not is_stereo_signal(input_signal):
+        if not arrays.is_stereo_signal(input_signal):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
@@ -228,7 +219,7 @@ class StereoDelay(effect.Effect):
     def sample_dry_wet(
         self, time_array: arrays.FloatArray
     ) -> tuple[arrays.FloatArray, arrays.FloatArray]:
-        if not is_stereo_signal(time_array):
+        if not arrays.is_stereo_signal(time_array):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )

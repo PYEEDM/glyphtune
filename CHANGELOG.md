@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Output stream with an arbitrary number of channels (`glyphtune.output.Stream`).
 - Effects module (including base `Effect` object).
 - Stereo effects module (including `StereoPan`, `StereoLevels`, `StereoInterMix`, and `StereoDelay`).
-- `glyphtune.arrays` module.
+- `glyphtune.arrays` module (including `FloatArray` type alias and `is_stereo_signal` function).
 
 ### Changed
 
