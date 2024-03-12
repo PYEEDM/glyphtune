@@ -5,22 +5,22 @@ import pyaudio
 from glyphtune import waveforms
 
 
-class MonoStream:
-    """Audio stream with mono output."""
+class Stream:
+    """Audio output stream."""
 
     def __init__(
-        self,
-        sampling_rate: int = 44100,
-        buffer_size: int = 512,
+        self, sampling_rate: int = 44100, buffer_size: int = 512, channels: int = 2
     ) -> None:
-        """Initializes a mono audio stream.
+        """Initializes an audio stream.
 
         Args:
             sampling_rate: the sampling rate to use in samples per second.
             buffer_size: the size of chunks to be streamed in samples.
+            channels: number of channels to output.
         """
         self.sampling_rate = sampling_rate
         self.buffer_size = buffer_size
+        self.channels = channels
 
     @property
     def sampling_rate(self) -> int:
@@ -44,6 +44,17 @@ class MonoStream:
             raise ValueError("Buffer size must be positive")
         self.__buffer_size = value
 
+    @property
+    def channels(self) -> int:
+        """Number of channels of the output stream."""
+        return self.__channels
+
+    @channels.setter
+    def channels(self, value: int) -> None:
+        if value <= 0:
+            raise ValueError("Number of channels must be positive")
+        self.__channels = value
+
     def stream_waveform(self, waveform: waveforms.Waveform) -> None:
         """Stream a waveform until `SystemExit` or `KeyboardInterrupt` is raised.
 
@@ -51,7 +62,9 @@ class MonoStream:
             waveform: waveform to be streamed.
         """
         py_audio = pyaudio.PyAudio()
-        stream = py_audio.open(self.__sampling_rate, 1, pyaudio.paFloat32, output=True)
+        stream = py_audio.open(
+            self.__sampling_rate, self.__channels, pyaudio.paFloat32, output=True
+        )
         chunk_number = 0
         try:
             while True:
@@ -59,11 +72,13 @@ class MonoStream:
                     self.__sampling_rate,
                     self.buffer_size,
                     chunk_number * self.__buffer_size,
+                    self.__channels,
                 )
                 if sampled_chunk.dtype != np.float32:
                     sampled_chunk = sampled_chunk.astype(np.float32)
-                chunk_bytes = sampled_chunk.tobytes()
-                stream.write(chunk_bytes, self.__buffer_size)
+                sampled_chunk = sampled_chunk.flatten("F")
+                sampled_chunk_bytes = sampled_chunk.tobytes()
+                stream.write(sampled_chunk_bytes, self.__buffer_size)
                 chunk_number += 1
         except (SystemExit, KeyboardInterrupt):
             stream.stop_stream()

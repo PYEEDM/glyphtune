@@ -27,7 +27,10 @@ def test_sine_shape_1hz() -> None:
 
     sampled_sine_waveform = sine_waveform.sample_samples(8, 9)
 
-    reference_sine_samples = [0, 2**-0.5, 1, 2**-0.5, 0, -(2**-0.5), -1, -(2**-0.5), 0]
+    inv_sqrt_2 = 2**-0.5
+    reference_sine_samples = np.array(
+        2 * [[0, inv_sqrt_2, 1, inv_sqrt_2, 0, -inv_sqrt_2, -1, -inv_sqrt_2, 0]]
+    )
     assert sampled_sine_waveform == pytest.approx(reference_sine_samples)
 
 
@@ -36,7 +39,7 @@ def test_sine_shape_2hz() -> None:
     sine_waveform = waveforms.Sine(2)
 
     sampled_sine_waveform = sine_waveform.sample_samples(8, 9)
-    reference_sine_samples = [0, 1, 0, -1, 0, 1, 0, -1, 0]
+    reference_sine_samples = np.array(2 * [[0, 1, 0, -1, 0, 1, 0, -1, 0]])
     assert sampled_sine_waveform == pytest.approx(reference_sine_samples)
 
 
@@ -45,7 +48,9 @@ def test_sawtooth_shape_1hz() -> None:
     sawtooth_waveform = waveforms.Sawtooth(1)
 
     sampled_sawtooth_waveform = sawtooth_waveform.sample_samples(8, 9)
-    reference_sawtooth_samples = [0, 0.25, 0.5, 0.75, -1, -0.75, -0.5, -0.25, 0]
+    reference_sawtooth_samples = np.array(
+        2 * [[0, 0.25, 0.5, 0.75, -1, -0.75, -0.5, -0.25, 0]]
+    )
     assert sampled_sawtooth_waveform == pytest.approx(reference_sawtooth_samples)
 
 
@@ -54,7 +59,7 @@ def test_sawtooth_shape_2hz() -> None:
     sawtooth_waveform = waveforms.Sawtooth(2)
 
     sampled_sawtooth_waveform = sawtooth_waveform.sample_samples(8, 9)
-    reference_sawtooth_samples = [0, 0.5, -1, -0.5, 0, 0.5, -1, -0.5, 0]
+    reference_sawtooth_samples = np.array(2 * [[0, 0.5, -1, -0.5, 0, 0.5, -1, -0.5, 0]])
     assert sampled_sawtooth_waveform == pytest.approx(reference_sawtooth_samples)
 
 
@@ -63,7 +68,7 @@ def test_pulse_shape_1hz() -> None:
     pulse_waveform = waveforms.Pulse(1, duty_cycle=0.75)
 
     sampled_pulse_waveform = pulse_waveform.sample_samples(8, 9)
-    reference_pulse_samples = [1, 1, 1, 1, 1, 1, -1, -1, 1]
+    reference_pulse_samples = np.array(2 * [[1, 1, 1, 1, 1, 1, -1, -1, 1]])
     assert sampled_pulse_waveform == pytest.approx(reference_pulse_samples)
 
 
@@ -72,7 +77,7 @@ def test_pulse_shape_2hz() -> None:
     pulse_waveform = waveforms.Pulse(2, duty_cycle=0.75)
 
     sampled_pulse_waveform = pulse_waveform.sample_samples(8, 9)
-    reference_pulse_samples = [1, 1, 1, -1, 1, 1, 1, -1, 1]
+    reference_pulse_samples = np.array(2 * [[1, 1, 1, -1, 1, 1, 1, -1, 1]])
     assert sampled_pulse_waveform == pytest.approx(reference_pulse_samples)
 
 
@@ -81,7 +86,7 @@ def test_square_shape_1hz() -> None:
     square_waveform = waveforms.Square(1)
 
     sampled_square_waveform = square_waveform.sample_samples(8, 9)
-    reference_square_samples = [1, 1, 1, 1, -1, -1, -1, -1, 1]
+    reference_square_samples = np.array(2 * [[1, 1, 1, 1, -1, -1, -1, -1, 1]])
     assert sampled_square_waveform == pytest.approx(reference_square_samples)
 
 
@@ -90,7 +95,7 @@ def test_square_shape_2hz() -> None:
     square_waveform = waveforms.Square(2)
 
     sampled_square_waveform = square_waveform.sample_samples(8, 9)
-    reference_square_samples = [1, 1, -1, -1, 1, 1, -1, -1, 1]
+    reference_square_samples = np.array(2 * [[1, 1, -1, -1, 1, 1, -1, -1, 1]])
     assert sampled_square_waveform == pytest.approx(reference_square_samples)
 
 
@@ -99,7 +104,7 @@ def test_symmetric_triangle_shape_1hz() -> None:
     triangle_waveform = waveforms.Triangle(1)
 
     sampled_triangle_waveform = triangle_waveform.sample_samples(8, 9)
-    reference_triangle_samples = [0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0]
+    reference_triangle_samples = np.array(2 * [[0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0]])
     assert sampled_triangle_waveform == pytest.approx(reference_triangle_samples)
 
 
@@ -108,7 +113,7 @@ def test_symmetric_triangle_shape_2hz() -> None:
     triangle_waveform = waveforms.Triangle(2)
 
     sampled_triangle_waveform = triangle_waveform.sample_samples(8, 9)
-    reference_triangle_samples = [0, 1, 0, -1, 0, 1, 0, -1, 0]
+    reference_triangle_samples = np.array(2 * [[0, 1, 0, -1, 0, 1, 0, -1, 0]])
     assert sampled_triangle_waveform == pytest.approx(reference_triangle_samples)
 
 
@@ -117,7 +122,9 @@ def test_asymmetric_triangle_shape_1hz() -> None:
     triangle_waveform = waveforms.Triangle(1, rising_part=0.75)
 
     sampled_triangle_waveform = triangle_waveform.sample_samples(8, 9)
-    reference_triangle_samples = [0, 1 / 3, 2 / 3, 1, 0, -1, -2 / 3, -1 / 3, 0]
+    reference_triangle_samples = np.array(
+        2 * [[0, 1 / 3, 2 / 3, 1, 0, -1, -2 / 3, -1 / 3, 0]]
+    )
     assert sampled_triangle_waveform == pytest.approx(reference_triangle_samples)
 
 
@@ -126,7 +133,9 @@ def test_asymmetric_triangle_shape_2hz() -> None:
     triangle_waveform = waveforms.Triangle(2, rising_part=0.75)
 
     sampled_triangle_waveform = triangle_waveform.sample_samples(8, 9)
-    reference_triangle_samples = [0, 2 / 3, 0, -2 / 3, 0, 2 / 3, 0, -2 / 3, 0]
+    reference_triangle_samples = np.array(
+        2 * [[0, 2 / 3, 0, -2 / 3, 0, 2 / 3, 0, -2 / 3, 0]]
+    )
     assert sampled_triangle_waveform == pytest.approx(reference_triangle_samples)
 
 
@@ -152,9 +161,9 @@ def test_wave_produces_correct_frequency(wave: waveforms.PeriodicWave) -> None:
     """
     sampling_rate = 2000
 
-    signal = wave.sample_seconds(sampling_rate, 1)
+    signal = wave.sample_seconds(sampling_rate, 1, channels=1)
 
-    peak_frequency = _get_peak_frequency(signal, sampling_rate)
+    peak_frequency = _get_peak_frequency(signal.squeeze(), sampling_rate)
     assert peak_frequency == wave.frequency
 
 
@@ -164,12 +173,12 @@ def test_phase_offset_does_not_affect_frequency() -> None:
     duration = 1
     wave = waveforms.Sine(440)
 
-    signal_before = wave.sample_seconds(sampling_rate, duration)
+    signal_before = wave.sample_seconds(sampling_rate, duration, channels=1)
     wave.phase = 0.37
-    signal_after = wave.sample_seconds(sampling_rate, duration)
+    signal_after = wave.sample_seconds(sampling_rate, duration, channels=1)
 
-    peak_frequency_before = _get_peak_frequency(signal_before, sampling_rate)
-    peak_frequency_after = _get_peak_frequency(signal_after, sampling_rate)
+    peak_frequency_before = _get_peak_frequency(signal_before.squeeze(), sampling_rate)
+    peak_frequency_after = _get_peak_frequency(signal_after.squeeze(), sampling_rate)
     assert peak_frequency_before == peak_frequency_after
 
 
@@ -180,11 +189,11 @@ def test_sampling_rate_does_not_affect_frequency() -> None:
     duration = 1
     wave = waveforms.Sine(440)
 
-    signal1 = wave.sample_seconds(sampling_rate_1, duration)
-    signal2 = wave.sample_seconds(sampling_rate_2, duration)
+    signal1 = wave.sample_seconds(sampling_rate_1, duration, channels=1)
+    signal2 = wave.sample_seconds(sampling_rate_2, duration, channels=1)
 
-    peak_frequency_1 = _get_peak_frequency(signal1, sampling_rate_1)
-    peak_frequency_2 = _get_peak_frequency(signal2, sampling_rate_2)
+    peak_frequency_1 = _get_peak_frequency(signal1.squeeze(), sampling_rate_1)
+    peak_frequency_2 = _get_peak_frequency(signal2.squeeze(), sampling_rate_2)
     assert peak_frequency_1 == peak_frequency_2
 
 
