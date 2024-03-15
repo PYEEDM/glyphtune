@@ -26,7 +26,6 @@ jobs:
         run: |
           pip install .
       - name: Check formatting with Black
-        if: success() || failure()
         run: |
           black --check --diff src tests
       - name: Lint with Pylint
