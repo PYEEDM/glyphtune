@@ -57,7 +57,7 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
 
     @property
     def absolute_peak(self) -> float:
-        """Equivalent to max(abs(signal.array))."""
+        """Equivalent to `max(abs(signal.array))`."""
         result = max(abs(self.array))
         assert isinstance(result, float)
         return result
