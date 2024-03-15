@@ -19,6 +19,7 @@ jobs:
           python -m pip install --upgrade black
           python -m pip install --upgrade pylint
           python -m pip install --upgrade mypy
+          python -m pip install --upgrade -r tests/tests_requirements.txt
           python -m pip install --upgrade tox
           python -m pip install --upgrade -r docs/docs_requirements.txt
       - name: Install glyphtune
