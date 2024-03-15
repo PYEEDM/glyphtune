@@ -13,7 +13,7 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         """Initializes an audio signal with an array-like.
 
         Args:
-            array: numerical array-like of the shape (channels, samples).
+            data: numerical array-like of the shape (channels, samples).
         """
         self.array = np.asarray(data)
 
