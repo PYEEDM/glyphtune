@@ -17,20 +17,17 @@ jobs:
           python -m pip install --upgrade pip
           sudo apt-get install portaudio19-dev
           python -m pip install --upgrade black
-          python -m pip install --upgrade -r docs/docs_requirements.txt
           python -m pip install --upgrade pylint
           python -m pip install --upgrade mypy
           python -m pip install --upgrade -r tests/tests_requirements.txt
           python -m pip install --upgrade tox
+          python -m pip install --upgrade -r docs/docs_requirements.txt
       - name: Check formatting with Black
         run: |
           black --check --diff src tests
       - name: Install glyphtune
         run: |
           pip install .
-      - name: Build docs
-        run: |
-          mkdocs build -f docs/mkdocs.yml
       - name: Lint with Pylint
         run: |
           pylint src tests
@@ -40,3 +37,6 @@ jobs:
       - name: Test with tox
         run: |
           tox
+      - name: Build docs
+        run: |
+          mkdocs build -f docs/mkdocs.yml
