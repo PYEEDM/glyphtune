@@ -1,4 +1,4 @@
-"""A hierarchy of classes for creating waveforms and sampling them into arrays of audio data."""
+"""A hierarchy of classes for creating waveforms and sampling them into audio signals."""
 
 from glyphtune.waveforms.waveform import Waveform, OperationWaveform
 from glyphtune.waveforms.periodic_waves import (

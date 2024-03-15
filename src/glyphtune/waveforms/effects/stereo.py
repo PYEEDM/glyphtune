@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-from glyphtune import arrays, _strings
+from glyphtune import _strings, signal
 from glyphtune.waveforms import waveform
 from glyphtune.waveforms.effects import effect
 
@@ -41,14 +41,14 @@ class StereoPan(effect.Effect):
         self._stereo_inter_mix.right_to_left = -min(value, 0)
 
     @override
-    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
-        if not arrays.is_stereo_signal(input_signal):
+    def apply(self, input_signal: signal.Signal) -> signal.Signal:
+        if not input_signal.is_stereo:
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        sampled_stereo_levels = self._stereo_levels.apply(input_signal)
-        sampled_stereo_inter_mix = self._stereo_inter_mix.apply(input_signal)
-        return sampled_stereo_levels + sampled_stereo_inter_mix
+        stereo_levels_signal = self._stereo_levels.apply(input_signal)
+        stereo_inter_mix_signal = self._stereo_inter_mix.apply(input_signal)
+        return signal.Signal(stereo_levels_signal + stereo_inter_mix_signal)
 
     @override
     def __eq__(self, other: Any) -> bool:
@@ -93,13 +93,14 @@ class StereoLevels(effect.Effect):
         self.right_level = right_level
 
     @override
-    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
-        if not arrays.is_stereo_signal(input_signal):
+    def apply(self, input_signal: signal.Signal) -> signal.Signal:
+        if not input_signal.is_stereo:
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        wet_signal: arrays.FloatArray
-        wet_signal = input_signal * np.array([[self.left_level], [self.right_level]])
+        wet_signal = signal.Signal(
+            input_signal * signal.Signal([[self.left_level], [self.right_level]])
+        )
         return wet_signal
 
     @override
@@ -150,16 +151,18 @@ class StereoInterMix(effect.Effect):
         self.left_to_right = left_to_right
 
     @override
-    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
-        if not arrays.is_stereo_signal(input_signal):
+    def apply(self, input_signal: signal.Signal) -> signal.Signal:
+        if not input_signal.is_stereo:
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        wet_signal: arrays.FloatArray = np.array(
-            [
-                self.right_to_left * input_signal[1],
-                self.left_to_right * input_signal[0],
-            ]
+        wet_signal = signal.Signal(
+            np.array(
+                [
+                    self.right_to_left * input_signal[1],
+                    self.left_to_right * input_signal[0],
+                ]
+            )
         )
         return wet_signal
 
@@ -217,23 +220,23 @@ class StereoDelay(effect.Effect):
 
     @override
     def sample_dry_wet(
-        self, time_array: arrays.FloatArray
-    ) -> tuple[arrays.FloatArray, arrays.FloatArray]:
-        if not arrays.is_stereo_signal(time_array):
+        self, time: signal.Signal
+    ) -> tuple[signal.Signal, signal.Signal]:
+        if not time.is_stereo:
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        dry_signal = self.input_waveform.sample_arr(time_array)
-        wet_signal = dry_signal.copy()
+        dry_signal = self.input_waveform.sample_time(time)
+        wet_signal = signal.Signal(np.copy(dry_signal))
         delay = abs(self.left_right_delay)
         if delay != 0:
             delayed_channel = 1 if self.left_right_delay > 0 else 0
-            delayed_signal = self.input_waveform.sample_arr(time_array - delay)
+            delayed_signal = self.input_waveform.sample_time(time - delay)
             wet_signal[delayed_channel] = delayed_signal[delayed_channel]
         return dry_signal, wet_signal
 
     @override
-    def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
+    def apply(self, input_signal: signal.Signal) -> signal.Signal:
         raise NotImplementedError(
             f"{type(self).__name__} cannot be applied directly and "
             "must be sampled using sample_dry_wet"

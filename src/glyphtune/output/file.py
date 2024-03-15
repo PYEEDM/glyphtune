@@ -38,16 +38,16 @@ def write_wav(
         wav_parameters: wav file output parameters.
         start_offset: the starting offset with which to sample the waveform for output, in seconds.
     """
-    sampled_waveform = waveform.sample_seconds(
+    signal = waveform.sample_seconds(
         wav_parameters.sampling_rate, duration, start_offset, wav_parameters.channels
     )
     type_code = f"i{wav_parameters.sample_width}"
     type_max = np.iinfo(type_code).max
-    sampled_waveform_retyped = (sampled_waveform * type_max).astype(type_code)
-    sampled_waveform_bytes = sampled_waveform_retyped.tobytes("F")
+    retyped_signal = (signal * type_max).array.astype(type_code)
+    signal_bytes = retyped_signal.tobytes("F")
     wave_write = wave.Wave_write(str(path))
     wave_write.setnchannels(wav_parameters.channels)
     wave_write.setsampwidth(wav_parameters.sample_width)
     wave_write.setframerate(wav_parameters.sampling_rate)
-    wave_write.writeframes(sampled_waveform_bytes)
+    wave_write.writeframes(signal_bytes)
     wave_write.close()
