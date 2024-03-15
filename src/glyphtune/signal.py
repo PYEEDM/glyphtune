@@ -7,7 +7,12 @@ import numpy.typing as npt
 
 
 class Signal(np.lib.mixins.NDArrayOperatorsMixin):
-    """WIP"""  # TODO
+    """Class representing audio signals.
+
+    Basically a wrapper around a Numpy array with validation, properties, and manipulation methods
+    specific to audio signals. Can be passed to Python operators and Numpy functions in most ways
+    as long as a valid audio signal can be returned.
+    """
 
     def __init__(self, data: npt.ArrayLike) -> None:
         """Initializes an audio signal with an array-like.
