@@ -19,6 +19,7 @@ class Effect(waveform.Waveform):
             input_waveform: the input waveform of the effect.
             mix: the portion of the output that will be "wet". Can be negative for inverted output.
         """
+        super().__init__()
         self.input_waveform = input_waveform
         self.mix = mix
 

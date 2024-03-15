@@ -22,6 +22,7 @@ class PhaseModulation(waveform.Waveform):
             carrier: the periodic wave whose phase will be modulated.
             modulator: the waveform used for the modulation.
         """
+        super().__init__()
         self.carrier = carrier
         self.modulator = modulator
 
