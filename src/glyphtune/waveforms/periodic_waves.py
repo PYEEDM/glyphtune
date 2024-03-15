@@ -90,6 +90,12 @@ class Sawtooth(PeriodicWave):
 def _pulse_signal(
     time_array: arrays.FloatArray, duty_cycle: float
 ) -> arrays.FloatArray:
+    """Returns a unit pulse signal.
+
+    Args:
+        time_array: an array containing the values of the time variable at each sample point.
+        duty_cycle: the fraction of one period in which the signal is high.
+    """
     result: arrays.FloatArray = (
         2 * (np.floor(time_array) - np.floor(time_array - duty_cycle)) - 1
     )
