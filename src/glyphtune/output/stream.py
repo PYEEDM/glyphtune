@@ -74,10 +74,7 @@ class Stream:
                     chunk_number * self.__buffer_size,
                     self.__channels,
                 )
-                if sampled_chunk.dtype != np.float32:
-                    sampled_chunk = sampled_chunk.astype(np.float32)
-                sampled_chunk = sampled_chunk.flatten("F")
-                sampled_chunk_bytes = sampled_chunk.tobytes()
+                sampled_chunk_bytes = sampled_chunk.astype(np.float32).tobytes("F")
                 stream.write(sampled_chunk_bytes, self.__buffer_size)
                 chunk_number += 1
         except (SystemExit, KeyboardInterrupt):
