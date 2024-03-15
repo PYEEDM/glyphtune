@@ -18,7 +18,7 @@ class StereoPan(effect.Effect):
         Args:
             input_waveform: the input waveform of the effect.
             pan: stereo pan value in the range [-1, 1] i.e., from entirely left to entirely right.
-            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
+            mix: multiplier of the wet signal. The dry signal will be multiplied by `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self._stereo_levels = StereoLevels(input_waveform)
@@ -86,7 +86,7 @@ class StereoLevels(effect.Effect):
             input_waveform: the input waveform of the effect.
             left_level: the level of the left channel.
             right_level: the level of the right channel.
-            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
+            mix: multiplier of the wet signal. The dry signal will be multiplied by `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self.left_level = left_level
@@ -143,7 +143,7 @@ class StereoInterMix(effect.Effect):
             input_waveform: the input waveform of the effect.
             right_to_left: how much of the right channel to send to the left channel.
             left_to_right: how much of the left channel to send to the right channel.
-            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
+            mix: multiplier of the wet signal. The dry signal will be multiplied by `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self.right_to_left = right_to_left
@@ -210,7 +210,7 @@ class StereoDelay(effect.Effect):
             left_right_delay: the delay between the left and right channels in seconds.
                 A positive value means that the right channel's signal is delayed,
                 and a negative value means that the left channel's signal is delayed.
-            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
+            mix: multiplier of the wet signal. The dry signal will be multiplied by `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self.left_right_delay = left_right_delay

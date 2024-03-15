@@ -17,7 +17,7 @@ class Effect(waveform.Waveform):
 
         Args:
             input_waveform: the input waveform of the effect.
-            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
+            mix: multiplier of the wet signal. The dry signal will be multiplied by `1-abs(mix)`.
         """
         super().__init__()
         self.input_waveform = input_waveform
@@ -28,8 +28,8 @@ class Effect(waveform.Waveform):
         """Proportional multiplier of the effect's wet signal.
 
         The effect's wet signal will be multiplied by this value
-        (therefore negative values mean inverted effect output)
-        The dry signal will be multiplied `1-abs(mix)`.
+        (therefore negative values mean inverted effect output).
+        The dry signal will be multiplied by `1-abs(mix)`.
         """
         return self.__mix
 
