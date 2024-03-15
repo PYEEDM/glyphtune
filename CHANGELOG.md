@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `PeriodicWave` now properly overrides `__eq__` and `__repr__`.
 - Periodic wave representations now explicitly state `phase` keyword.
 - `OperationWaveform` properties `operator`, `operands`, and `operator_kwargs` are now attributes and can therefore be freely accessed and set. 
-- Various documentation improvements
+- Various documentation improvements.
 
 ### Removed
 
