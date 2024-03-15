@@ -63,19 +63,19 @@ class Stream:
         """
         py_audio = pyaudio.PyAudio()
         stream = py_audio.open(
-            self.__sampling_rate, self.__channels, pyaudio.paFloat32, output=True
+            self.sampling_rate, self.channels, pyaudio.paFloat32, output=True
         )
         chunk_number = 0
         try:
             while True:
                 sampled_chunk = waveform.sample_samples(
-                    self.__sampling_rate,
+                    self.sampling_rate,
                     self.buffer_size,
-                    chunk_number * self.__buffer_size,
-                    self.__channels,
+                    chunk_number * self.buffer_size,
+                    self.channels,
                 )
                 sampled_chunk_bytes = sampled_chunk.astype(np.float32).tobytes("F")
-                stream.write(sampled_chunk_bytes, self.__buffer_size)
+                stream.write(sampled_chunk_bytes, self.buffer_size)
                 chunk_number += 1
         except (SystemExit, KeyboardInterrupt):
             stream.stop_stream()

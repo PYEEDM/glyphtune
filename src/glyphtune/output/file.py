@@ -1,8 +1,8 @@
 """Audio output to file."""
 
-import wave
-import pathlib
 import dataclasses
+import pathlib
+import wave
 import numpy as np
 from glyphtune import waveforms
 

@@ -25,7 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `FloatArray` from `glyphtune` module to `glyphtune.arrays`.
 - `PeriodicWave` now properly overrides `__eq__` and `__repr__`.
 - Periodic wave representations now explicitly state `phase` keyword.
-- `OperationWaveform` attribute `_operator_kwargs` is now `__operator_kwargs`. 
+- `OperationWaveform` properties `operator`, `operands`, and `operator_kwargs` are now attributes and can therefore be freely accessed and set. 
+- Various documentation improvements.
 
 ### Removed
 

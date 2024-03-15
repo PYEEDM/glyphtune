@@ -1,7 +1,7 @@
 """Basic functionality of effects."""
 
 from typing import Any, final, override
-from glyphtune import _strings, arrays
+from glyphtune import arrays, _strings
 from glyphtune.waveforms import waveform
 
 
@@ -17,14 +17,20 @@ class Effect(waveform.Waveform):
 
         Args:
             input_waveform: the input waveform of the effect.
-            mix: the portion of the output that will be "wet". Can be negative for inverted output.
+            mix: multiplier of the wet signal. The dry signal will be multiplied by `1-abs(mix)`.
         """
+        super().__init__()
         self.input_waveform = input_waveform
         self.mix = mix
 
     @property
     def mix(self) -> float:
-        """The portion of the output that will be "wet". Can be negative for inverted output."""
+        """Proportional multiplier of the effect's wet signal.
+
+        The effect's wet signal will be multiplied by this value
+        (therefore negative values mean inverted effect output).
+        The dry signal will be multiplied by `1-abs(mix)`.
+        """
         return self.__mix
 
     @mix.setter
@@ -38,7 +44,7 @@ class Effect(waveform.Waveform):
     def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         dry_signal, wet_signal = self.sample_dry_wet(time_array)
         dry_mix = 1 - abs(self.mix)
-        return dry_mix * dry_signal + self.__mix * wet_signal
+        return dry_mix * dry_signal + self.mix * wet_signal
 
     def sample_dry_wet(
         self, time_array: arrays.FloatArray
@@ -83,7 +89,7 @@ class Effect(waveform.Waveform):
             isinstance(other, Effect)
             and type(self) is type(other)
             and self.input_waveform == other.input_waveform
-            and self.__mix == other.mix
+            and self.mix == other.mix
         )
 
     @override
@@ -92,4 +98,4 @@ class Effect(waveform.Waveform):
         return f"{class_name}({self.input_waveform}{self._mix_repr()})"
 
     def _mix_repr(self, default_value: float = 0.5) -> str:
-        return _strings.optional_param_repr("mix", default_value, self.__mix)
+        return _strings.optional_param_repr("mix", default_value, self.mix)

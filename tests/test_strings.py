@@ -3,6 +3,16 @@
 from glyphtune import _strings
 
 
+def test__param_repr() -> None:
+    """Ensure the representation of parameters is as expected."""
+    assert _strings.param_repr("test", 1) == ", test=1"
+
+
+def test_first_param_repr() -> None:
+    """Ensure the representation of parameters is as expected."""
+    assert _strings.param_repr("test", 1, True) == "test=1"
+
+
 def test_optional_param_repr() -> None:
     """Ensure the representation of optional parameters is as expected."""
     assert _strings.optional_param_repr("test", 0, 1) == ", test=1"

@@ -1,15 +1,9 @@
-"""Basic functionality of waveforms and operations on them.
-
-See [`waveform.Waveform`][glyphtune.waveforms.Waveform]
-and [`waveform.OperationWaveform`][glyphtune.waveforms.OperationWaveform]
-for more information.
-"""
+"""Basic functionality of waveforms and operations on them."""
 
 from __future__ import annotations
 from typing import Any, Callable, Literal, override
-import copy
 import numpy as np
-from glyphtune import arrays
+from glyphtune import arrays, _strings
 
 
 class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
@@ -118,6 +112,12 @@ class OperationWaveform(Waveform):
 
     "lazily" samples audio by recursively sampling the operands as needed and applying the
     operator on the resulting audio data. The operands may be waveforms or scalar values.
+
+    Attributes:
+        operator: the operator to be called on the (sampled) operands when this waveform is sampled.
+        operands: the operands whose (sampled) outputs are passed to the operator when this
+            waveform is sampled.
+        operator_kwargs: the keyword arguments this waveform passes to its operator when sampled.
     """
 
     def __init__(
@@ -131,29 +131,14 @@ class OperationWaveform(Waveform):
         Args:
             operator: the operator to use on the (sampled) operands when the waveform is sampled.
                 The operator should take float arrays/numbers as input and return a float array.
-            *operands: operands whose (sampled) output is passed to the operator when the waveform
+            *operands: operands whose (sampled) outputs are passed to the operator when the waveform
                 is sampled.
             **operator_kwargs: keyword arguments to pass to `operator` when the waveform is sampled.
         """
         super().__init__()
-        self.__operator = operator
-        self.__operands = operands
-        self.__operator_kwargs = operator_kwargs
-
-    @property
-    def operator(self) -> Callable[..., Any]:
-        """The operator of this waveform."""
-        return self.__operator
-
-    @property
-    def operands(self) -> tuple[Waveform | float, ...]:
-        """A copy of the operands of this waveform."""
-        return copy.copy(self.__operands)
-
-    @property
-    def operator_kwargs(self) -> dict[str, Any]:
-        """A copy of the keyword arguments this waveform passes to its operator when sampled."""
-        return copy.copy(self.__operator_kwargs)
+        self.operator = operator
+        self.operands = operands
+        self.operator_kwargs = operator_kwargs
 
     @override
     def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
@@ -163,9 +148,9 @@ class OperationWaveform(Waveform):
                 if isinstance(operand, Waveform)
                 else operand
             )
-            for operand in self.__operands
+            for operand in self.operands
         )
-        result = self.__operator(*sampled_operands, **self.__operator_kwargs)
+        result = self.operator(*sampled_operands, **self.operator_kwargs)
         if not isinstance(result, np.ndarray):
             raise TypeError("Operator did not return an array")
         return result
@@ -175,9 +160,9 @@ class OperationWaveform(Waveform):
         return (
             isinstance(other, OperationWaveform)
             and type(self) is type(other)
-            and self.__operator == other.operator
-            and self.__operands == other.operands
-            and self.__operator_kwargs == other.operator_kwargs
+            and self.operator == other.operator
+            and self.operands == other.operands
+            and self.operator_kwargs == other.operator_kwargs
         )
 
     @override
@@ -185,20 +170,19 @@ class OperationWaveform(Waveform):
         operator_repr = self.operator.__name__
         if isinstance(self.operator, np.ufunc):
             operator_repr = f"numpy.{operator_repr}"
-            if self.__operands and not self.operator_kwargs:
-                if len(self.__operands) == 1:
-                    return f"{operator_repr}({repr(self.__operands[0])})"
-                return f"{operator_repr}{repr(self.__operands)}"
+            if self.operands and not self.operator_kwargs:
+                if len(self.operands) == 1:
+                    return f"{operator_repr}({repr(self.operands[0])})"
+                return f"{operator_repr}{repr(self.operands)}"
 
         class_name = type(self).__name__
         operands_repr = ""
-        for operand in self.__operands:
+        for operand in self.operands:
             operands_repr += f", {repr(operand)}"
-        kwargs_repr = self._kwargs_repr()
-        return f"{class_name}({operator_repr}{operands_repr}{kwargs_repr})"
-
-    def _kwargs_repr(self) -> str:
-        kwargs_repr = ""
-        for key, value in self.operator_kwargs.items():
-            kwargs_repr += f", {key}={repr(value)}"
-        return kwargs_repr
+        operator_kwargs_repr = "".join(
+            [
+                _strings.param_repr(key, value)
+                for key, value in self.operator_kwargs.items()
+            ]
+        )
+        return f"{class_name}({operator_repr}{operands_repr}{operator_kwargs_repr})"
