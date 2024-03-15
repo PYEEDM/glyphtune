@@ -11,7 +11,7 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
 
     Basically a wrapper around a Numpy array with validation, properties, and manipulation methods
     specific to audio signals. Can be passed to Python operators and Numpy functions in most ways
-    as long as a valid audio signal can be returned.
+    as long as a valid audio signal can be returned. Can also be indexed like Numpy arrays.
     """
 
     def __init__(self, data: npt.ArrayLike) -> None:
