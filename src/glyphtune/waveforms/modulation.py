@@ -36,30 +36,29 @@ class PhaseModulation(waveform.Waveform):
         if not isinstance(value, periodic_waves.PeriodicWave):
             raise TypeError("Phase modulation carrier must be a periodic wave")
         self.__carrier = value
-        self.__sinusoidal_carrier = isinstance(self.carrier, periodic_waves.Sine)
 
     @override
     def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         sampled_modulator = self.modulator.sample_arr(time_array)
         phase_modulation = sampled_modulator / self.carrier.frequency
-        if self.__sinusoidal_carrier:
+        if isinstance(self.carrier, periodic_waves.Sine):
             phase_modulation /= 2 * np.pi
         modulated_time_array = time_array + phase_modulation
-        return self.__carrier.sample_arr(modulated_time_array)
+        return self.carrier.sample_arr(modulated_time_array)
 
     @override
     def __eq__(self, other: Any) -> bool:
         return (
             isinstance(other, PhaseModulation)
             and type(self) is type(other)
-            and self.__carrier == other.carrier
+            and self.carrier == other.carrier
             and self.modulator == other.modulator
         )
 
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        return f"{class_name}({self.__carrier}, {self.modulator})"
+        return f"{class_name}({self.carrier}, {self.modulator})"
 
 
 def phase_modulate(

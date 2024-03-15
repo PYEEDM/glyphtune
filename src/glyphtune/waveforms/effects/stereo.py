@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-from glyphtune import _strings, arrays
+from glyphtune import arrays, _strings
 from glyphtune.waveforms import waveform
 from glyphtune.waveforms.effects import effect
 
@@ -18,11 +18,11 @@ class StereoPan(effect.Effect):
         Args:
             input_waveform: the input waveform of the effect.
             pan: stereo pan value in the range [-1, 1] i.e., from entirely left to entirely right.
-            mix: the portion of the output that will be "wet". Can be negative for inverted output.
+            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
-        self.__stereo_levels = StereoLevels(input_waveform)
-        self.__stereo_inter_mix = StereoInterMix(self.__stereo_levels, mix=1)
+        self._stereo_levels = StereoLevels(input_waveform)
+        self._stereo_inter_mix = StereoInterMix(self._stereo_levels, mix=1)
         self.pan = pan
 
     @property
@@ -35,10 +35,10 @@ class StereoPan(effect.Effect):
         if abs(value) > 1:
             raise ValueError("Pan value must be in the range [-1, 1]")
         self.__pan = value
-        self.__stereo_levels.left_level = 1 - max(value, 0)
-        self.__stereo_levels.right_level = 1 + min(value, 0)
-        self.__stereo_inter_mix.left_to_right = max(value, 0)
-        self.__stereo_inter_mix.right_to_left = -min(value, 0)
+        self._stereo_levels.left_level = 1 - max(value, 0)
+        self._stereo_levels.right_level = 1 + min(value, 0)
+        self._stereo_inter_mix.left_to_right = max(value, 0)
+        self._stereo_inter_mix.right_to_left = -min(value, 0)
 
     @override
     def apply(self, input_signal: arrays.FloatArray) -> arrays.FloatArray:
@@ -46,8 +46,8 @@ class StereoPan(effect.Effect):
             raise ValueError(
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
-        sampled_stereo_levels = self.__stereo_levels.apply(input_signal)
-        sampled_stereo_inter_mix = self.__stereo_inter_mix.apply(input_signal)
+        sampled_stereo_levels = self._stereo_levels.apply(input_signal)
+        sampled_stereo_inter_mix = self._stereo_inter_mix.apply(input_signal)
         return sampled_stereo_levels + sampled_stereo_inter_mix
 
     @override
@@ -55,13 +55,13 @@ class StereoPan(effect.Effect):
         return (
             super().__eq__(other)
             and isinstance(other, StereoPan)
-            and self.__pan == other.pan
+            and self.pan == other.pan
         )
 
     @override
     def __repr__(self) -> str:
         class_name = type(self).__name__
-        pan_repr = _strings.optional_param_repr("pan", 0, self.__pan)
+        pan_repr = _strings.optional_param_repr("pan", 0, self.pan)
         return f"{class_name}({self.input_waveform}{pan_repr}{self._mix_repr(1)})"
 
 
@@ -86,7 +86,7 @@ class StereoLevels(effect.Effect):
             input_waveform: the input waveform of the effect.
             left_level: the level of the left channel.
             right_level: the level of the right channel.
-            mix: the portion of the output that will be "wet". Can be negative for inverted output.
+            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self.left_level = left_level
@@ -143,7 +143,7 @@ class StereoInterMix(effect.Effect):
             input_waveform: the input waveform of the effect.
             right_to_left: how much of the right channel to send to the left channel.
             left_to_right: how much of the left channel to send to the right channel.
-            mix: the portion of the output that will be "wet". Can be negative for inverted output.
+            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self.right_to_left = right_to_left
@@ -210,7 +210,7 @@ class StereoDelay(effect.Effect):
             left_right_delay: the delay between the left and right channels in seconds.
                 A positive value means that the right channel's signal is delayed,
                 and a negative value means that the left channel's signal is delayed.
-            mix: the portion of the output that will be "wet". Can be negative for inverted output.
+            mix: multiplier of the wet signal. The dry signal will be multiplied `1-abs(mix)`.
         """
         super().__init__(input_waveform, mix)
         self.left_right_delay = left_right_delay

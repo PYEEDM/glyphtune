@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-from glyphtune import _strings, arrays
+from glyphtune import arrays, _strings
 from glyphtune.waveforms import waveform
 
 
@@ -44,7 +44,7 @@ class PeriodicWave(waveform.Waveform):
         return (
             isinstance(other, PeriodicWave)
             and type(self) is type(other)
-            and self.__frequency == other.frequency
+            and self.frequency == other.frequency
             and self.phase == other.phase
         )
 
@@ -60,7 +60,7 @@ class PeriodicWave(waveform.Waveform):
         Args:
             time_array: time array to convert.
         """
-        return self.__frequency * time_array + self.phase
+        return self.frequency * time_array + self.phase
 
     def _phase_repr(self, default_value: float = 0) -> str:
         return _strings.optional_param_repr("phase", default_value, self.phase)
@@ -85,6 +85,15 @@ class Sawtooth(PeriodicWave):
             local_time_array - np.floor(local_time_array + 0.5)
         )
         return result
+
+
+def _pulse_signal(
+    time_array: arrays.FloatArray, duty_cycle: float
+) -> arrays.FloatArray:
+    result: arrays.FloatArray = (
+        2 * (np.floor(time_array) - np.floor(time_array - duty_cycle)) - 1
+    )
+    return result
 
 
 class Pulse(PeriodicWave):
@@ -117,14 +126,7 @@ class Pulse(PeriodicWave):
     @override
     def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         local_time_array = self._to_local(time_array)
-        result: arrays.FloatArray = (
-            2
-            * (
-                np.floor(local_time_array)
-                - np.floor(local_time_array - self.__duty_cycle)
-            )
-            - 1
-        )
+        result = _pulse_signal(local_time_array, self.duty_cycle)
         return result
 
     @override
@@ -132,7 +134,7 @@ class Pulse(PeriodicWave):
         return (
             isinstance(other, Pulse)
             and super().__eq__(other)
-            and self.__duty_cycle == other.duty_cycle
+            and self.duty_cycle == other.duty_cycle
         )
 
     @override
@@ -140,7 +142,7 @@ class Pulse(PeriodicWave):
         class_name = type(self).__name__
         phase_repr = self._phase_repr()
         duty_cycle_repr = _strings.optional_param_repr(
-            "duty_cycle", 0.5, self.__duty_cycle
+            "duty_cycle", 0.5, self.duty_cycle
         )
         return f"{class_name}({self.frequency}{phase_repr}{duty_cycle_repr})"
 
@@ -154,9 +156,7 @@ class Square(PeriodicWave):
     @override
     def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         local_time_array = self._to_local(time_array)
-        result: arrays.FloatArray = (
-            2 * (np.floor(local_time_array) - np.floor(local_time_array - 0.5)) - 1
-        )
+        result = _pulse_signal(local_time_array, 0.5)
         return result
 
 
@@ -190,14 +190,14 @@ class Triangle(PeriodicWave):
     @override
     def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
         local_time_array = self._to_local(time_array)
-        offset_time_array = local_time_array + self.__rising_part / 2
+        offset_time_array = local_time_array + self.rising_part / 2
         sawtooth_signal = offset_time_array - np.floor(offset_time_array)
         result: arrays.FloatArray = np.piecewise(
             sawtooth_signal,
-            [sawtooth_signal <= self.__rising_part],
+            [sawtooth_signal <= self.rising_part],
             [
-                lambda x: -1 + 2 * (x / self.__rising_part),
-                lambda x: 1 - 2 * (x - self.__rising_part) / (1 - self.__rising_part),
+                lambda x: -1 + 2 * (x / self.rising_part),
+                lambda x: 1 - 2 * (x - self.rising_part) / (1 - self.rising_part),
             ],
         )
         return result
@@ -207,7 +207,7 @@ class Triangle(PeriodicWave):
         return (
             isinstance(other, Triangle)
             and super().__eq__(other)
-            and self.__rising_part == other.rising_part
+            and self.rising_part == other.rising_part
         )
 
     @override
@@ -215,6 +215,6 @@ class Triangle(PeriodicWave):
         class_name = type(self).__name__
         phase_repr = self._phase_repr()
         rising_part_repr = _strings.optional_param_repr(
-            "rising_part", 0.5, self.__rising_part
+            "rising_part", 0.5, self.rising_part
         )
         return f"{class_name}({self.frequency}{phase_repr}{rising_part_repr})"
