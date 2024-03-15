@@ -1,4 +1,4 @@
-name: lint, analyze, and test
+name: build, lint, analyze, and test
 on: push
 jobs:
   main:
@@ -15,6 +15,7 @@ jobs:
           python -m pip install --upgrade pip
           sudo apt-get install portaudio19-dev
           python -m pip install --upgrade black
+          python -m pip install --upgrade -r docs/docs_requirements.txt
           python -m pip install --upgrade pylint
           python -m pip install --upgrade mypy
           python -m pip install --upgrade -r tests/tests_requirements.txt
@@ -25,6 +26,9 @@ jobs:
       - name: Install glyphtune
         run: |
           pip install .
+      - name: Build docs
+        run: |
+          mkdocs build -f docs/mkdocs.yml
       - name: Lint with Pylint
         run: |
           pylint src tests
