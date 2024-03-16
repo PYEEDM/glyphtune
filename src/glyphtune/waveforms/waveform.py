@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Any, Callable, Literal, override
 import numbers
 import numpy as np
-from glyphtune import arrays, _strings
+from glyphtune import _strings, signal
 
 
 class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
@@ -18,18 +18,17 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
     [`waveforms.OperationWaveform`][glyphtune.waveforms.OperationWaveform].
     """
 
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        """Samples audio data given a time variable array.
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        """Samples audio data given a time variable signal.
 
         Args:
-            time_array: a 2d array of the shape `(channels, samples)` containing, for each channel,
-                the values of the time variable at each sample point.
+            time: signal containing the values of the time variable at each sample point.
 
         Returns:
-            An array containing the sampled signal of the waveform.
-                The returned array will be of the same shape as `time_array`.
-                Each value in the returned array is the sample of the waveform's signal at the
-                corresponding time value (in seconds) for a particular channel in `time_array`.
+            The sampled signal of the waveform.
+                The returned signal will be of the same shape as `time`.
+                Each value in the returned signal is the sample of the
+                waveform at the corresponding time value (in seconds) in `time`.
         """
         raise NotImplementedError(
             f"Attempted to sample a base {type(self).__name__} object"
@@ -41,7 +40,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
         duration: float,
         start_offset: float = 0,
         channels: int = 2,
-    ) -> arrays.FloatArray:
+    ) -> signal.Signal:
         """Samples audio data given time information in seconds.
 
         Args:
@@ -51,8 +50,8 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
             channels: the number of channels to return.
 
         Returns:
-            A 2d array containing the sampled signal of the waveform.
-                The returned array will have the shape `(channels, ceil(sampling_rate*duration))`,
+            The sampled signal of the waveform.
+                The returned signal will have the shape `(channels, ceil(sampling_rate*duration))`,
                 containing `ceil(sampling_rate*duration)` samples for each channel.
         """
         if sampling_rate <= 0:
@@ -63,11 +62,11 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
         sampling_period = 1 / sampling_rate
         time_array = np.arange(start_offset, end, sampling_period)
         time_array = np.tile(time_array, (channels, 1))
-        return self.sample_arr(time_array)
+        return self.sample_time(signal.Signal(time_array))
 
     def sample_samples(
         self, sampling_rate: int, count: int, start_offset: int = 0, channels: int = 2
-    ) -> arrays.FloatArray:
+    ) -> signal.Signal:
         """Samples audio data given sample count information.
 
         Args:
@@ -77,8 +76,8 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
             channels: the number of channels to return.
 
         Returns:
-            A 2d array containing the sampled signal of the waveform.
-                The returned array will have the shape `(channels, count)`,
+            The sampled signal of the waveform.
+                The returned signal will have the shape `(channels, count)`,
                 containing `count` samples for each channel.
         """
         if sampling_rate <= 0:
@@ -91,6 +90,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
             sampling_rate, duration_seconds, start_offset_seconds, channels
         )
 
+    @override
     def __array_ufunc__(
         self,
         ufunc: np.ufunc,
@@ -115,10 +115,9 @@ class OperationWaveform(Waveform):
     operator on the resulting audio data. The operands may be waveforms or scalar values.
 
     Attributes:
-        operator: the operator to be called on the (sampled) operands when this waveform is sampled.
-        operands: the operands whose (sampled) outputs are passed to the operator when this
-            waveform is sampled.
-        operator_kwargs: the keyword arguments this waveform passes to its operator when sampled.
+        operator: the operator to be called on the operand signals when this waveform is sampled.
+        operands: the operands whose signals are passed to `operator` when this waveform is sampled.
+        operator_kwargs: the keyword arguments this waveform passes to `operator` when sampled.
     """
 
     def __init__(
@@ -130,10 +129,9 @@ class OperationWaveform(Waveform):
         """Initializes an operation waveform with operands and operator information.
 
         Args:
-            operator: the operator to use on the (sampled) operands when the waveform is sampled.
-                The operator should take float arrays/numbers as input and return a float array.
-            *operands: operands whose (sampled) outputs are passed to the operator when the waveform
-                is sampled.
+            operator: the operator to use on the operand signals when the waveform is sampled.
+                The operator should accept and return numerical array-like objects.
+            *operands: operands whose signals are passed to `operator` when the waveform is sampled.
             **operator_kwargs: keyword arguments to pass to `operator` when the waveform is sampled.
         """
         super().__init__()
@@ -142,18 +140,12 @@ class OperationWaveform(Waveform):
         self.operator_kwargs = operator_kwargs
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        sampled_operands = tuple(
-            (
-                operand.sample_arr(time_array)
-                if isinstance(operand, Waveform)
-                else operand
-            )
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        operand_signals = tuple(
+            (operand.sample_time(time) if isinstance(operand, Waveform) else operand)
             for operand in self.operands
         )
-        result = self.operator(*sampled_operands, **self.operator_kwargs)
-        if not isinstance(result, np.ndarray):
-            raise TypeError("Operator did not return an array")
+        result = signal.Signal(self.operator(*operand_signals, **self.operator_kwargs))
         return result
 
     @override

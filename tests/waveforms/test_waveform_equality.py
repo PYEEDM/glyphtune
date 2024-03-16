@@ -2,15 +2,15 @@
 
 from typing import Any, override
 import numpy as np
-from glyphtune import arrays, waveforms
+from glyphtune import signal, waveforms
 
 
 class DummyWaveform(waveforms.Waveform):
     """Useless waveform that's always equal to any other waveform of its kind."""
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        return super().sample_arr(time_array)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        return super().sample_time(time)
 
     @override
     def __eq__(self, other: Any) -> bool:

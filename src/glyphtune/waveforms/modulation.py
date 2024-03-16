@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-from glyphtune import arrays
+from glyphtune import signal
 from glyphtune.waveforms import periodic_waves, waveform
 
 
@@ -38,13 +38,13 @@ class PhaseModulation(waveform.Waveform):
         self.__carrier = value
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        sampled_modulator = self.modulator.sample_arr(time_array)
-        phase_modulation = sampled_modulator / self.carrier.frequency
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        modulator_signal = self.modulator.sample_time(time)
+        phase_modulation = modulator_signal / self.carrier.frequency
         if isinstance(self.carrier, periodic_waves.Sine):
             phase_modulation /= 2 * np.pi
-        modulated_time_array = time_array + phase_modulation
-        return self.carrier.sample_arr(modulated_time_array)
+        modulated_time = time + phase_modulation
+        return self.carrier.sample_time(modulated_time)
 
     @override
     def __eq__(self, other: Any) -> bool:
@@ -74,7 +74,7 @@ def phase_modulate(
     """
     if not modulators:
         return carrier
-    modulator_sum: waveform.Waveform = np.sum(list(modulators))
+    modulator_sum = np.sum(list(modulators))
     return PhaseModulation(carrier, modulator_sum)
 
 
@@ -91,7 +91,8 @@ def amplitude_modulate(
     """
     if not modulators:
         return carrier
-    result: waveform.Waveform = carrier + np.sum(list(modulators))
+    result = carrier + np.sum(list(modulators))
+    assert isinstance(result, waveform.Waveform)
     return result
 
 
@@ -109,5 +110,6 @@ def ring_modulate(
     if not modulators:
         return carrier
     # mypy refuses to understand that this is fine, even though it works perfectly for np.sum...
-    result: waveform.Waveform = carrier * np.prod(list(modulators))  # type: ignore[arg-type]
+    result = carrier * np.prod(list(modulators))  # type: ignore[arg-type]
+    assert isinstance(result, waveform.Waveform)
     return result
