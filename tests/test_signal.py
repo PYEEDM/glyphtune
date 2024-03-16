@@ -53,7 +53,7 @@ def test_signal_init_with_numpy_array_uses_the_same_array() -> None:
 
     sig = signal.Signal(data)
 
-    assert sig.array is data
+    assert sig.data is data
 
 
 def test_signal_init_with_signal_uses_the_same_array() -> None:
@@ -62,7 +62,7 @@ def test_signal_init_with_signal_uses_the_same_array() -> None:
 
     sig = signal.Signal(signal.Signal(data))
 
-    assert sig.array is data
+    assert sig.data is data
 
 
 def test_signal_init_with_list_is_same_as_numpy_array_init_with_list() -> None:
@@ -71,7 +71,7 @@ def test_signal_init_with_list_is_same_as_numpy_array_init_with_list() -> None:
 
     sig = signal.Signal(signal.Signal(data))
 
-    assert np.array_equal(sig.array, np.array(data))
+    assert np.array_equal(sig.data, np.array(data))
 
 
 def test_signal_init_with_numpy_array_of_wrong_type_raises_valueerror() -> None:
@@ -149,7 +149,7 @@ def test_normalize() -> None:
     sig = signal.Signal(data)
 
     normalized_reference = data / 7
-    assert np.array_equal(sig.normalize().array, normalized_reference)
+    assert np.array_equal(sig.normalize().data, normalized_reference)
 
 
 def test_normalize_makes_absolute_peak_one() -> None:
@@ -168,7 +168,7 @@ def test_remove_dc_offset() -> None:
     sig = signal.Signal(data)
 
     assert np.allclose(
-        sig.remove_dc_offset().array, [[1 / 3, -8 / 3, 7 / 3], [4 / 3, 16 / 3, -20 / 3]]
+        sig.remove_dc_offset().data, [[1 / 3, -8 / 3, 7 / 3], [4 / 3, 16 / 3, -20 / 3]]
     )
 
 
@@ -188,7 +188,7 @@ def test_reverse() -> None:
     sig = signal.Signal(data)
 
     reverse_data_reference = np.array([[3, -2, 1], [-7, 5, 1]])
-    assert np.array_equal(sig.reverse().array, reverse_data_reference)
+    assert np.array_equal(sig.reverse().data, reverse_data_reference)
 
 
 def test_repr() -> None:

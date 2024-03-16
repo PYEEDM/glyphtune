@@ -22,25 +22,27 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         Args:
             data: numerical array-like of the shape (channels, samples).
         """
-        self.array = np.asarray(data)
+        self.data = np.asarray(data)
 
     @property
-    def array(self) -> np.ndarray[Any, np.dtype[Any]]:
+    def data(self) -> np.ndarray[Any, np.dtype[Any]]:
         """Array containing the data of the signal."""
-        return self.__array
+        return self.__data
 
-    @array.setter
-    def array(self, value: np.ndarray[Any, np.dtype[Any]]) -> None:
+    @data.setter
+    def data(self, value: np.ndarray[Any, np.dtype[Any]]) -> None:
         if not _is_real(value.dtype):
-            raise ValueError("Signal array must have a real numeric type")
+            raise ValueError("Signal data array must have a real numeric type")
         if len(value.shape) != 2:
-            raise ValueError("Signal must be of the shape (channels, samples)")
-        self.__array = value
+            raise ValueError(
+                "Signal data array must be of the shape (channels, samples)"
+            )
+        self.__data = value
 
     @property
     def shape(self) -> tuple[int, ...]:
         """Shape of the signal array."""
-        return self.array.shape
+        return self.data.shape
 
     @property
     def channels(self) -> int:
@@ -64,33 +66,33 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
 
     @property
     def absolute_peak(self) -> numbers.Real:
-        """Equivalent to `max(abs(signal.array))`."""
-        result = np.max(np.abs(self.array))
+        """Equivalent to `max(abs(signal.data))`."""
+        result = np.max(np.abs(self.data))
         assert isinstance(result, numbers.Real)
         return result
 
     @property
     def dc_offset(self) -> np.ndarray[Any, np.dtype[Any]]:
         """DC offset (also known as DC bias) along each channel of the signal."""
-        result = self.array.mean(axis=1)
+        result = self.data.mean(axis=1)
         assert isinstance(result, np.ndarray)
         return result
 
     def normalize(self) -> Signal:
         """Returns the signal normalized between -1 and 1."""
-        return Signal(self.array / self.absolute_peak)
+        return Signal(self.data / self.absolute_peak)
 
     def remove_dc_offset(self) -> Signal:
         """Returns the signal with the DC offset removed."""
-        return Signal(self.array - np.expand_dims(self.dc_offset, axis=1))
+        return Signal(self.data - np.expand_dims(self.dc_offset, axis=1))
 
     def reverse(self) -> Signal:
         """Returns the signal reversed."""
-        return Signal(np.flip(self.array, axis=1))
+        return Signal(np.flip(self.data, axis=1))
 
     @override
     def __repr__(self) -> str:
-        return f"Signal(numpy.{repr(self.array)})"
+        return f"Signal(numpy.{repr(self.data)})"
 
     @override
     def __array_ufunc__(
@@ -103,7 +105,7 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         **kwargs: Any,
     ) -> Signal | np.ndarray[Any, np.dtype[Any]]:
         converted_inputs = (np.asarray(operand) for operand in inputs)
-        result_data = self.array.__array_ufunc__(
+        result_data = self.data.__array_ufunc__(
             ufunc, method, *converted_inputs, **kwargs
         )
         if is_signal_like(result_data):
@@ -119,7 +121,7 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
     ) -> Any:
         converted_args = tuple(np.asarray(arg) for arg in args)
         converted_types = tuple(type(arg) for arg in converted_args)
-        result_data = self.array.__array_function__(
+        result_data = self.data.__array_function__(
             func, converted_types, converted_args, kwargs
         )
         if is_signal_like(result_data):
@@ -133,18 +135,18 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         self, dtype: np.dtype[Any] | None = None
     ) -> np.ndarray[Any, np.dtype[Any]]:
         if dtype is None:
-            dtype = self.array.dtype
-        return self.array.__array__(dtype)
+            dtype = self.data.dtype
+        return self.data.__array__(dtype)
 
     def __getitem__(
         self, key: Any
     ) -> np.ndarray[Any, np.dtype[Any]] | np.float_ | np.int_:
-        result = self.array[key]
+        result = self.data[key]
         assert isinstance(result, (np.ndarray, np.float_, np.int_))
         return result
 
     def __setitem__(self, key: Any, value: Any) -> None:
-        self.array[key] = value
+        self.data[key] = value
 
 
 def is_signal_like(data: npt.ArrayLike) -> bool:

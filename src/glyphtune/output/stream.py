@@ -74,7 +74,7 @@ class Stream:
                     chunk_number * self.buffer_size,
                     self.channels,
                 )
-                chunk_signal_bytes = chunk_signal.array.astype(np.float32).tobytes("F")
+                chunk_signal_bytes = chunk_signal.data.astype(np.float32).tobytes("F")
                 stream.write(chunk_signal_bytes, self.buffer_size)
                 chunk_number += 1
         except (SystemExit, KeyboardInterrupt):
