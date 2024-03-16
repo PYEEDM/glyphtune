@@ -43,7 +43,7 @@ def write_wav(
     )
     type_code = f"i{wav_parameters.sample_width}"
     type_max = np.iinfo(type_code).max
-    retyped_signal = (signal * type_max).array.astype(type_code)
+    retyped_signal = np.asarray(signal * type_max).astype(type_code)
     signal_bytes = retyped_signal.tobytes("F")
     wave_write = wave.Wave_write(str(path))
     wave_write.setnchannels(wav_parameters.channels)
