@@ -1,7 +1,7 @@
 # glyphtune
 
 ::: glyphtune
-::: glyphtune.arrays
+::: glyphtune.signal
 ::: glyphtune.waveforms
 ::: glyphtune.waveforms.effects
 ::: glyphtune.output

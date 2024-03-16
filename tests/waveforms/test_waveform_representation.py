@@ -2,15 +2,15 @@
 
 from typing import override
 import numpy as np
-from glyphtune import arrays, waveforms
+from glyphtune import signal, waveforms
 
 
 class DummyWaveform(waveforms.Waveform):
     """Useless waveform with a constant repr function."""
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        return super().sample_arr(time_array)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        return super().sample_time(time)
 
     @override
     def __repr__(self) -> str:
@@ -21,8 +21,8 @@ class DummyPeriodicWave(waveforms.PeriodicWave):
     """Useless waveform with a constant repr function."""
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        return super().sample_arr(time_array)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        return super().sample_time(time)
 
     @override
     def __repr__(self) -> str:
@@ -34,7 +34,7 @@ def test_operation_waveform_repr_with_numpy_function_and_one_operand() -> None:
     dummy_waveform = DummyWaveform()
     dummy_waveform_repr = repr(dummy_waveform)
 
-    negated_waveform: waveforms.OperationWaveform = -dummy_waveform
+    negated_waveform = -dummy_waveform
 
     reference_repr = f"numpy.negative({dummy_waveform_repr})"
     assert repr(negated_waveform) == reference_repr
@@ -45,7 +45,7 @@ def test_operation_waveform_repr_with_numpy_function_and_multiple_operands() -> 
     dummy_waveform = DummyWaveform()
     dummy_waveform_repr = repr(dummy_waveform)
 
-    addition_waveform: waveforms.OperationWaveform = dummy_waveform + dummy_waveform
+    addition_waveform = dummy_waveform + dummy_waveform
 
     reference_repr = f"numpy.add({dummy_waveform_repr}, {dummy_waveform_repr})"
     assert repr(addition_waveform) == reference_repr

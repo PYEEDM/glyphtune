@@ -68,14 +68,14 @@ class Stream:
         chunk_number = 0
         try:
             while True:
-                sampled_chunk = waveform.sample_samples(
+                chunk_signal = waveform.sample_samples(
                     self.sampling_rate,
                     self.buffer_size,
                     chunk_number * self.buffer_size,
                     self.channels,
                 )
-                sampled_chunk_bytes = sampled_chunk.astype(np.float32).tobytes("F")
-                stream.write(sampled_chunk_bytes, self.buffer_size)
+                chunk_signal_bytes = chunk_signal.data.astype(np.float32).tobytes("F")
+                stream.write(chunk_signal_bytes, self.buffer_size)
                 chunk_number += 1
         except (SystemExit, KeyboardInterrupt):
             stream.stop_stream()

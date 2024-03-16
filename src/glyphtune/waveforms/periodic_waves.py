@@ -2,7 +2,7 @@
 
 from typing import Any, override
 import numpy as np
-from glyphtune import arrays, _strings
+from glyphtune import _strings, signal
 from glyphtune.waveforms import waveform
 
 
@@ -36,8 +36,8 @@ class PeriodicWave(waveform.Waveform):
         self.__frequency = value
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        return super().sample_arr(time_array)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        return super().sample_time(time)
 
     @override
     def __eq__(self, other: Any) -> bool:
@@ -52,15 +52,15 @@ class PeriodicWave(waveform.Waveform):
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self.frequency}{self._phase_repr()})"
 
-    def _to_local(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        """Returns local time array from a given time array.
+    def _to_local(self, time: signal.Signal) -> signal.Signal:
+        """Returns local time signal.
 
-        Equivalent to `self.frequency * time_array + self.phase`.
+        Equivalent to `self.frequency * time + self.phase`.
 
         Args:
-            time_array: time array to convert.
+            time: time signal to convert.
         """
-        return self.frequency * time_array + self.phase
+        return signal.Signal(self.frequency * time + self.phase)
 
     def _phase_repr(self, default_value: float = 0) -> str:
         return _strings.optional_param_repr("phase", default_value, self.phase)
@@ -70,8 +70,8 @@ class Sine(PeriodicWave):
     """Waveform with a sine shape."""
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        result: arrays.FloatArray = np.sin(2 * np.pi * self._to_local(time_array))
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        result = signal.Signal(np.sin(2 * np.pi * self._to_local(time)))
         return result
 
 
@@ -79,26 +79,20 @@ class Sawtooth(PeriodicWave):
     """Waveform with a sawtooth shape."""
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        local_time_array = self._to_local(time_array)
-        result: arrays.FloatArray = 2 * (
-            local_time_array - np.floor(local_time_array + 0.5)
-        )
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        local_time = self._to_local(time)
+        result = signal.Signal(2 * (local_time - np.floor(local_time + 0.5)))
         return result
 
 
-def _pulse_signal(
-    time_array: arrays.FloatArray, duty_cycle: float
-) -> arrays.FloatArray:
+def _pulse_signal(time: signal.Signal, duty_cycle: float) -> signal.Signal:
     """Returns a unit pulse signal.
 
     Args:
-        time_array: an array containing the values of the time variable at each sample point.
+        time: signal containing the values of the time variable at each sample point.
         duty_cycle: the fraction of one period in which the signal is high.
     """
-    result: arrays.FloatArray = (
-        2 * (np.floor(time_array) - np.floor(time_array - duty_cycle)) - 1
-    )
+    result = signal.Signal(2 * (np.floor(time) - np.floor(time - duty_cycle)) - 1)
     return result
 
 
@@ -130,9 +124,9 @@ class Pulse(PeriodicWave):
         self.__duty_cycle = value
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        local_time_array = self._to_local(time_array)
-        result = _pulse_signal(local_time_array, self.duty_cycle)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        local_time = self._to_local(time)
+        result = _pulse_signal(local_time, self.duty_cycle)
         return result
 
     @override
@@ -160,9 +154,9 @@ class Square(PeriodicWave):
     """
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        local_time_array = self._to_local(time_array)
-        result = _pulse_signal(local_time_array, 0.5)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        local_time = self._to_local(time)
+        result = _pulse_signal(local_time, 0.5)
         return result
 
 
@@ -194,19 +188,19 @@ class Triangle(PeriodicWave):
         self.__rising_part = value
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        local_time_array = self._to_local(time_array)
-        offset_time_array = local_time_array + self.rising_part / 2
-        sawtooth_signal = offset_time_array - np.floor(offset_time_array)
-        result: arrays.FloatArray = np.piecewise(
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        local_time = self._to_local(time)
+        offset_time = local_time + self.rising_part / 2
+        sawtooth_signal = signal.Signal(offset_time - np.floor(offset_time))
+        result = np.piecewise(
             sawtooth_signal,
-            [sawtooth_signal <= self.rising_part],
+            [sawtooth_signal.data <= self.rising_part],
             [
                 lambda x: -1 + 2 * (x / self.rising_part),
                 lambda x: 1 - 2 * (x - self.rising_part) / (1 - self.rising_part),
             ],
         )
-        return result
+        return signal.Signal(result)
 
     @override
     def __eq__(self, other: Any) -> bool:

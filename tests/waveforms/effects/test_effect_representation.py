@@ -1,7 +1,7 @@
 """Tests for effect representation."""
 
 from typing import override
-from glyphtune import arrays, waveforms
+from glyphtune import signal, waveforms
 from glyphtune.waveforms import effects
 
 
@@ -9,8 +9,8 @@ class DummyWaveform(waveforms.Waveform):
     """Useless waveform with a constant repr function."""
 
     @override
-    def sample_arr(self, time_array: arrays.FloatArray) -> arrays.FloatArray:
-        return super().sample_arr(time_array)
+    def sample_time(self, time: signal.Signal) -> signal.Signal:
+        return super().sample_time(time)
 
     @override
     def __repr__(self) -> str:
