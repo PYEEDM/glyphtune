@@ -1,7 +1,7 @@
 """Audio signal representation and manipulation."""
 
 from __future__ import annotations
-from typing import Any, Literal, override
+from typing import Any, Callable, Iterable, Literal, Mapping, override
 import numbers
 import numpy as np
 import numpy.typing as npt
@@ -11,8 +11,9 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
     """Class representing audio signals.
 
     Basically a wrapper around a Numpy array with validation, properties, and manipulation methods
-    specific to audio signals. Can be passed to Python operators and Numpy functions in most ways
-    as long as a valid audio signal can be returned. Can also be indexed like Numpy arrays.
+    specific to audio signals. Can be indexed like Numpy arrays, and can be passed to Python
+    operators and Numpy functions in most ways, which returns a new signal if possible,
+    or, if no possible signal results from an operation, a normal Numpy array is returned instead.
     """
 
     def __init__(self, data: npt.ArrayLike) -> None:
@@ -30,10 +31,7 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
 
     @array.setter
     def array(self, value: np.ndarray[Any, np.dtype[Any]]) -> None:
-        if not (
-            np.issubdtype(value.dtype, np.floating)
-            or np.issubdtype(value.dtype, np.integer)
-        ):
+        if not _is_real(value.dtype):
             raise ValueError("Signal array must have a real numeric type")
         if len(value.shape) != 2:
             raise ValueError("Signal must be of the shape (channels, samples)")
@@ -108,14 +106,23 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         result_data = self.array.__array_ufunc__(
             ufunc, method, *converted_inputs, **kwargs
         )
-        if (
-            isinstance(result_data, np.ndarray)
-            and len(result_data.shape) == 2
-            and (
-                np.issubdtype(result_data.dtype, np.floating)
-                or np.issubdtype(result_data.dtype, np.integer)
-            )
-        ):
+        if is_signal_like(result_data):
+            return Signal(result_data)
+        return np.asarray(result_data)
+
+    def __array_function__(
+        self,
+        func: Callable[..., Any],
+        _types: Iterable[type],
+        args: Iterable[Any],
+        kwargs: Mapping[str, Any],
+    ) -> Any:
+        converted_args = tuple(np.asarray(arg) for arg in args)
+        converted_types = tuple(type(arg) for arg in converted_args)
+        result_data = self.array.__array_function__(
+            func, converted_types, converted_args, kwargs
+        )
+        if is_signal_like(result_data):
             return Signal(result_data)
         return np.asarray(result_data)
 
@@ -129,11 +136,26 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
             dtype = self.array.dtype
         return self.array.__array__(dtype)
 
-    def __getitem__(self, key: Any) -> np.ndarray[Any, np.dtype[Any]] | numbers.Real:
-        result = self.array.__getitem__(key)
-        assert isinstance(result, (np.ndarray, numbers.Real))
+    def __getitem__(
+        self, key: Any
+    ) -> np.ndarray[Any, np.dtype[Any]] | np.float_ | np.int_:
+        result = self.array[key]
+        assert isinstance(result, (np.ndarray, np.float_, np.int_))
         return result
 
     def __setitem__(self, key: Any, value: Any) -> None:
-        # unfortunately, ndarray.__setitem__ is untyped...
-        self.array.__setitem__(key, value)  # type: ignore[no-untyped-call]
+        self.array[key] = value
+
+
+def is_signal_like(data: npt.ArrayLike) -> bool:
+    """Returns whether the given data can be a signal.
+
+    Args:
+        data: data to check.
+    """
+    array = np.asarray(data)
+    return len(array.shape) == 2 and _is_real(array.dtype)
+
+
+def _is_real(dtype: np.dtype[Any]) -> bool:
+    return np.issubdtype(dtype, np.float_) or np.issubdtype(dtype, np.int_)
