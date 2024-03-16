@@ -32,7 +32,7 @@ def test_sample_dry() -> None:
 
     dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
     reference_signal = time_waveform.sample_seconds(sampling_rate, duration)
-    assert dummy_effect_signal == reference_signal
+    assert np.array_equal(dummy_effect_signal, reference_signal)
 
 
 def test_sample_wet() -> None:
@@ -45,7 +45,7 @@ def test_sample_wet() -> None:
 
     dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
     reference_signal = time_waveform.sample_seconds(sampling_rate, duration) + 1
-    assert dummy_effect_signal == reference_signal
+    assert np.array_equal(dummy_effect_signal, reference_signal)
 
 
 def test_sample_negative_wet() -> None:
@@ -58,7 +58,7 @@ def test_sample_negative_wet() -> None:
 
     dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
     reference_signal = -time_waveform.sample_seconds(sampling_rate, duration) - 1
-    assert dummy_effect_signal == reference_signal
+    assert np.array_equal(dummy_effect_signal, reference_signal)
 
 
 def test_sample_mixed() -> None:

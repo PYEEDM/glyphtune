@@ -14,7 +14,7 @@ def _get_peak_frequency(input_signal: signal.Signal, sampling_rate: int) -> floa
     """
     if not input_signal.is_mono:
         raise ValueError("Input signal is not mono")
-    input_signal.remove_dc_offset()
+    input_signal = input_signal.remove_dc_offset()
     spectrum = np.abs(np.fft.fft(np.squeeze(input_signal)))
     frequencies = np.fft.fftfreq(len(spectrum))
     peak_frequency = abs(frequencies[np.argmax(spectrum)] * sampling_rate)

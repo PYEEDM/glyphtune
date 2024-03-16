@@ -25,7 +25,7 @@ def test_stereo_pan_zero_pan_is_equal_to_dry_signal() -> None:
     stereo_pan = effects.StereoPan(modified_time_waveform, 0)
     stereo_pan_signal = stereo_pan.sample_seconds(sampling_rate, duration)
     reference_signal = modified_time_waveform.sample_seconds(sampling_rate, duration)
-    assert stereo_pan_signal == reference_signal
+    assert np.array_equal(stereo_pan_signal, reference_signal)
 
 
 def test_stereo_pan_halfway_right() -> None:
@@ -39,7 +39,7 @@ def test_stereo_pan_halfway_right() -> None:
     reference_signal = modified_time_waveform.sample_seconds(sampling_rate, duration)
     reference_signal[1] += 0.5 * reference_signal[0]
     reference_signal[0] *= 0.5
-    assert stereo_pan_signal == reference_signal
+    assert np.array_equal(stereo_pan_signal, reference_signal)
 
 
 def test_stereo_pan_completely_right() -> None:
@@ -53,7 +53,7 @@ def test_stereo_pan_completely_right() -> None:
     reference_signal = modified_time_waveform.sample_seconds(sampling_rate, duration)
     reference_signal[1] += reference_signal[0]
     reference_signal[0] *= 0
-    assert stereo_pan_signal == reference_signal
+    assert np.array_equal(stereo_pan_signal, reference_signal)
 
 
 def test_stereo_pan_halfway_left() -> None:
@@ -67,7 +67,7 @@ def test_stereo_pan_halfway_left() -> None:
     reference_signal = modified_time_waveform.sample_seconds(sampling_rate, duration)
     reference_signal[0] += 0.5 * reference_signal[1]
     reference_signal[1] *= 0.5
-    assert stereo_pan_signal == reference_signal
+    assert np.array_equal(stereo_pan_signal, reference_signal)
 
 
 def test_stereo_pan_completely_left() -> None:
@@ -81,7 +81,7 @@ def test_stereo_pan_completely_left() -> None:
     reference_signal = modified_time_waveform.sample_seconds(sampling_rate, duration)
     reference_signal[0] += reference_signal[1]
     reference_signal[1] *= 0
-    assert stereo_pan_signal == reference_signal
+    assert np.array_equal(stereo_pan_signal, reference_signal)
 
 
 def test_stereo_levels() -> None:
@@ -95,7 +95,7 @@ def test_stereo_levels() -> None:
     reference_signal = modified_time_waveform.sample_seconds(sampling_rate, duration)
     reference_signal[0] *= 0.5
     reference_signal[1] *= -0.5
-    assert stereo_levels_signal == reference_signal
+    assert np.array_equal(stereo_levels_signal, reference_signal)
 
 
 def test_stereo_inter_mix() -> None:
@@ -110,7 +110,7 @@ def test_stereo_inter_mix() -> None:
     reference_signal = signal.Signal(np.flip(reference_signal, axis=0))
     reference_signal[0] *= 0.5
     reference_signal[1] *= -0.5
-    assert stereo_inter_mix_signal == reference_signal
+    assert np.array_equal(stereo_inter_mix_signal, reference_signal)
 
 
 def test_stereo_delay_positive_left_right_delay() -> None:
