@@ -191,10 +191,10 @@ class Triangle(PeriodicWave):
     def sample_time(self, time: signal.Signal) -> signal.Signal:
         local_time = self._to_local(time)
         offset_time = local_time + self.rising_part / 2
-        sawtooth_signal = offset_time - np.floor(offset_time)
+        sawtooth_signal = signal.Signal(offset_time - np.floor(offset_time))
         result = np.piecewise(
             sawtooth_signal,
-            [sawtooth_signal.array <= self.rising_part],
+            [sawtooth_signal.data <= self.rising_part],
             [
                 lambda x: -1 + 2 * (x / self.rising_part),
                 lambda x: 1 - 2 * (x - self.rising_part) / (1 - self.rising_part),
