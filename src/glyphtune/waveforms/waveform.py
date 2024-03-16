@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import Any, Callable, Literal, override
+import numbers
 import numpy as np
 from glyphtune import arrays, _strings
 
@@ -102,7 +103,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
         if method != "__call__" or "out" in kwargs:
             return NotImplemented
         for operand in inputs:
-            if not isinstance(operand, (Waveform, float, int)):
+            if not isinstance(operand, (Waveform, numbers.Real)):
                 return NotImplemented
         return OperationWaveform(ufunc, *inputs, **kwargs)
 

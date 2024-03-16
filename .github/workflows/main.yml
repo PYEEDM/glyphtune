@@ -1,5 +1,8 @@
 name: build, lint, analyze, and test
-on: push
+on:
+  push:
+  schedule:
+    - cron: "0 12 * * *"
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -22,25 +25,27 @@ jobs:
           python -m pip install --upgrade -r tests/tests_requirements.txt
           python -m pip install --upgrade tox
           python -m pip install --upgrade -r docs/docs_requirements.txt
-      - name: Install glyphtune
+      - id: install
+        name: Install glyphtune
         run: |
           pip install .
       - name: Check formatting with Black
+        if: steps.install.conclusion == 'success'
         run: |
           black --check --diff src tests
       - name: Lint with Pylint
-        if: success() || failure()
+        if: steps.install.conclusion == 'success'
         run: |
           pylint src tests
       - name: Analyze with mypy
-        if: success() || failure()
+        if: steps.install.conclusion == 'success'
         run: |
           mypy src tests
       - name: Test with tox
-        if: success() || failure()
+        if: steps.install.conclusion == 'success'
         run: |
           tox
       - name: Build docs
-        if: success() || failure()
+        if: steps.install.conclusion == 'success'
         run: |
           mkdocs build -f docs/mkdocs.yml

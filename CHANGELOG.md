@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Effects module (including base `Effect` object).
+- Effects module (including base `Effect` class).
 - Stereo effects module (including `StereoPan`, `StereoLevels`, `StereoInterMix`, and `StereoDelay`).
 - Output stream with an arbitrary number of channels (`glyphtune.output.Stream`).
 - Output to wav file (`glyphtune.output.write_wav` and `glyphtune.output.WavParameters`)
@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Waveform.sample_seconds` and `Waveform.sample_samples` now accept a `channels` option and can sample multi-channel audio, returning arrays of the shape `(channels, samples)`.
 - `Waveform.sample_seconds` and `Waveform.sample_samples` now sample stereo audio by default.
 - `PhaseModulation` no longer accepts the `frequency_modulation` option and is no longer able to perform frequency modulation.
-- `Square` objects no longer subclass `Pulse` and now subclass `PeriodicWave`.
 - Moved `FloatArray` from `glyphtune` module to `glyphtune.arrays`.
 - `PeriodicWave` now properly overrides `__eq__` and `__repr__`.
 - Periodic wave representations now explicitly state `phase` keyword.
@@ -36,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `Square` no longer subclasses `Pulse` and now subclasses `PeriodicWave`.
 - Various bugfixes and improvements in equality checks.
 
 ## [0.1.0] 2024-03-03
