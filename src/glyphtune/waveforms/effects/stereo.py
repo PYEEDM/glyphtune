@@ -99,7 +99,7 @@ class StereoLevels(effect.Effect):
                 f"{type(self).__name__} can only be applied to a stereo signal"
             )
         wet_signal = signal.Signal(
-            input_signal * signal.Signal([[self.left_level], [self.right_level]])
+            input_signal * [[self.left_level], [self.right_level]]
         )
         return wet_signal
 
