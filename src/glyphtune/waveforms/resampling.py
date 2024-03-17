@@ -12,7 +12,6 @@ class ResampleWaveform(waveform.Waveform):
     """Waveform for resampling audio data.
 
     Attributes:
-        original_audio: signal containing the audio data to resample.
         time_multiplier: time/speed multiplier. Can be negative for reverse resampling.
     """
 
@@ -33,6 +32,15 @@ class ResampleWaveform(waveform.Waveform):
         self.original_audio = original_audio
         self.sampling_rate = sampling_rate
         self.time_multiplier = time_multiplier
+
+    @property
+    def original_audio(self) -> signal.Signal:
+        """Signal containing the audio data to resample."""
+        return self.__original_audio
+
+    @original_audio.setter
+    def original_audio(self, value: signal.Signal) -> None:
+        self.__original_audio = signal.Signal(value)
 
     @property
     def sampling_rate(self) -> int:
