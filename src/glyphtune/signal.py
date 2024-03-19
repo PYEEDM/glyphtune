@@ -112,6 +112,9 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
     def __repr__(self) -> str:
         return f"Signal(numpy.{repr(self.data)})"
 
+    def __len__(self) -> int:
+        return self.length
+
     @override
     def __array_ufunc__(
         self,
