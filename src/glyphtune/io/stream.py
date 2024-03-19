@@ -110,3 +110,20 @@ def record(
         )
     )
     return read_signal
+
+
+def record_resample(
+    duration: float = np.inf, stream_parameters: StreamParameters = StreamParameters(1)
+) -> waveforms.ResampleWaveform:
+    """Returs a resample waveform of recorded audio input.
+
+    Args:
+        duration: the duration of time to record input, in seconds.
+            If set to infinity, recording will continue until interrupted.
+            Note that the recording may last longer than the specified duration until
+            the last buffer is over. This is more noticeable with a large `buffer_size`.
+        stream_parameters: the stream parameters to use.
+    """
+    return waveforms.ResampleWaveform(
+        record(duration, stream_parameters), stream_parameters.sampling_rate
+    )

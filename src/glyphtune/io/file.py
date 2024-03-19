@@ -51,6 +51,19 @@ def read_wav(path: pathlib.Path) -> tuple[WavParameters, signal.Signal]:
     return wav_parameters, read_signal
 
 
+def read_wav_resample(path: pathlib.Path) -> waveforms.ResampleWaveform:
+    """Reads a wav file into a resample waveform.
+
+    Args:
+        path: the path of the input file.
+
+    Returns:
+        A resample waveform that resamples the audio data read from file.
+    """
+    wav_parameters, read_signal = read_wav(path)
+    return waveforms.ResampleWaveform(read_signal, wav_parameters.sampling_rate)
+
+
 def write_wav(
     waveform: waveforms.Waveform,
     path: pathlib.Path,
