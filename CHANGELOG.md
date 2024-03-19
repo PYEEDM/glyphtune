@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Effects module (including base `Effect` class).
 - Stereo effects module (including `StereoPan`, `StereoLevels`, `StereoInterMix`, and `StereoDelay`).
 - Resampling module (including `ResampleWaveform` class).
-- Audio stream I/O with an arbitrary number of channels (`glyphtune.io.record`, `glyphtune.io.record_resample`, `glyphtune.io.play`, and `glyphtune.io.StreamParameters`.).
-- wav file I/O (`glyphtune.io.read_wav`, `glyphtune.io.read_wav_resample`, `glyphtune.io.write_wav` and `glyphtune.io.WavParameters`)
+- Audio stream I/O with an arbitrary number of channels (`glyphtune.io.record`, `glyphtune.io.record_resample`, `glyphtune.io.play`, `glyphtune.io.StreamHandler`, `glyphtune.io.PyAudioHandler`, and `glyphtune.io.StreamParameters`).
+- wav file I/O (`glyphtune.io.read`, `glyphtune.io.read_resample`, `glyphtune.io.write`, `glyphtune.io.FileHandler`, `glyphtune.io.WavHandler`, and `glyphtune.io.FileParameters`).
 - `glyphtune.signal` module (including `Signal` class).
 
 ### Changed
