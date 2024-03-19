@@ -105,7 +105,7 @@ def test_resample_waveform_repr() -> None:
     sig = signal.Signal([[1, 2, 3], [2, 3, 4]])
     wave = waveforms.ResampleWaveform(sig, 10)
 
-    assert repr(wave) == f"ResampleWaveform(Signal(numpy.{repr(sig.data)}), 10)"
+    assert repr(wave) == f"ResampleWaveform({repr(sig)}, 10)"
 
 
 def test_resample_waveform_repr_with_time_multiplier_argument() -> None:
@@ -113,10 +113,7 @@ def test_resample_waveform_repr_with_time_multiplier_argument() -> None:
     sig = signal.Signal([[1, 2, 3], [2, 3, 4]])
     wave = waveforms.ResampleWaveform(sig, 10, -1)
 
-    assert (
-        repr(wave)
-        == f"ResampleWaveform(Signal(numpy.{repr(sig.data)}), 10, time_multiplier=-1)"
-    )
+    assert repr(wave) == f"ResampleWaveform({repr(sig)}, 10, time_multiplier=-1)"
 
 
 def test_resample_waveform_repr_long_array_full() -> None:
@@ -125,8 +122,8 @@ def test_resample_waveform_repr_long_array_full() -> None:
     wave = waveforms.ResampleWaveform(sig, 10)
 
     with np.printoptions(threshold=sys.maxsize):
-        data_full_repr = repr(sig.data)
-    assert wave.full_repr() == f"ResampleWaveform(Signal(numpy.{data_full_repr}), 10)"
+        sig_full_repr = repr(sig)
+    assert wave.full_repr() == f"ResampleWaveform({sig_full_repr}, 10)"
 
 
 def test_periodic_wave_repr() -> None:
