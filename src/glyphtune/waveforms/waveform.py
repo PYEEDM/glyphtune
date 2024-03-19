@@ -66,7 +66,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
 
     def sample_samples(
         self,
-        count: int = 44100,
+        count: int | None = None,
         sampling_rate: int = 44100,
         start_offset: int = 0,
         channels: int = 2,
@@ -74,7 +74,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
         """Samples audio data given sample count information.
 
         Args:
-            count: the number of samples to take.
+            count: the number of samples to take. If None, will be equal to `sampling_rate`.
             sampling_rate: the sampling rate to use in samples per second.
             start_offset: the starting offset in samples.
             channels: the number of channels to return.
@@ -88,6 +88,8 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
             raise ValueError("Sampling rate must be positive")
         if channels <= 0:
             raise ValueError("Number of channels must be positive")
+        if count is None:
+            count = sampling_rate
         duration_seconds = count / sampling_rate
         start_offset_seconds = start_offset / sampling_rate
         return self.sample_seconds(
