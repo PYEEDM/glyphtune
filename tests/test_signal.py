@@ -264,6 +264,15 @@ def test_addition_with_scalar_results_in_signal() -> None:
     assert isinstance(sig + 1, signal.Signal)
 
 
+def test_addition_with_scalar_gives_correct_result() -> None:
+    """Ensure an addition operation between a signal and a scalar gives correct result."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(sig + 1, [[2, -1, 4], [2, 6, -6]])
+
+
 def test_addition_with_signal_results_in_signal() -> None:
     """Ensure an addition operation between two signals results in a signal."""
     data = [[1, -2, 3], [1, 5, -7]]
@@ -271,6 +280,15 @@ def test_addition_with_signal_results_in_signal() -> None:
     sig = signal.Signal(data)
 
     assert isinstance(sig + sig, signal.Signal)
+
+
+def test_addition_with_signal_gives_correct_result() -> None:
+    """Ensure an addition operation between two signals gives correct result."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(sig + sig, [[2, -4, 6], [2, 10, -14]])
 
 
 def test_diff_on_signal_results_in_signal() -> None:
@@ -282,6 +300,15 @@ def test_diff_on_signal_results_in_signal() -> None:
     assert isinstance(np.diff(sig), signal.Signal)
 
 
+def test_diff_on_signal_gives_correct_result() -> None:
+    """Ensure a Numpy diff operation on a signal gives correct result."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(np.diff(sig), [[-3, 5], [4, -12]])
+
+
 def test_max_does_not_result_in_signal() -> None:
     """Ensure a Numpy max operation on a signal does not result in a signal."""
     data = [[1, -2, 3], [1, 5, -7]]
@@ -291,6 +318,15 @@ def test_max_does_not_result_in_signal() -> None:
     assert not isinstance(np.max(sig), signal.Signal)
 
 
+def test_max_gives_correct_result() -> None:
+    """Ensure a Numpy max operation on a signal gives correct result."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+
+    assert np.max(sig) == 5
+
+
 def test_expand_dims_does_not_result_in_signal() -> None:
     """Ensure a Numpy expand_dims operation on a signal does not result in a signal."""
     data = [[1, -2, 3], [1, 5, -7]]
@@ -298,6 +334,35 @@ def test_expand_dims_does_not_result_in_signal() -> None:
     sig = signal.Signal(data)
 
     assert not isinstance(np.expand_dims(sig, axis=0), signal.Signal)
+
+
+def test_expand_dims_gives_correct_result() -> None:
+    """Ensure a Numpy expand_dims operation on a signal gives correct result."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(np.expand_dims(sig, axis=0), [[[1, -2, 3], [1, 5, -7]]])
+
+
+def test_in_place_operations_on_signal_keep_it_a_signal() -> None:
+    """Ensure that in-place operations on signal keep it a signal."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+    sig += 1
+
+    assert isinstance(sig, signal.Signal)
+
+
+def test_in_place_operations_on_signal_give_correct_results() -> None:
+    """Ensure that in-place operations on signal give correct results."""
+    data = [[1, -2, 3], [1, 5, -7]]
+
+    sig = signal.Signal(data)
+    sig += 1
+
+    assert np.array_equal(sig, [[2, -1, 4], [2, 6, -6]])
 
 
 def test_signal_conversion_to_array_returns_signal_array() -> None:
