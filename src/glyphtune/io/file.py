@@ -37,7 +37,6 @@ def read_wav(path: pathlib.Path) -> tuple[WavParameters, signal.Signal]:
         wave_read.getsampwidth(),
         wave_read.getframerate(),
     )
-
     length = wave_read.getnframes()
     read_bytes = wave_read.readframes(length)
     type_code = f"i{wav_parameters.sample_width}"
@@ -46,7 +45,7 @@ def read_wav(path: pathlib.Path) -> tuple[WavParameters, signal.Signal]:
         np.frombuffer(read_bytes, dtype=type_code).astype(np.float32) / type_max
     )
     read_signal = signal.Signal(
-        read_array_flat.reshape((wav_parameters.channels, length))
+        read_array_flat.reshape((wav_parameters.channels, length), order="F")
     )
     return wav_parameters, read_signal
 

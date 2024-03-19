@@ -106,7 +106,8 @@ def record(
     read_array_flat = np.frombuffer(read_bytes, dtype=np.float32)
     read_signal = signal.Signal(
         read_array_flat.reshape(
-            (stream_parameters.channels, stream_parameters.buffer_size * chunks)
+            (stream_parameters.channels, stream_parameters.buffer_size * chunks),
+            order="F",
         )
     )
     return read_signal
