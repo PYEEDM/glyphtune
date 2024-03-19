@@ -1,15 +1,33 @@
 """Audio I/O."""
 
-from glyphtune.io.stream import StreamParameters, record, record_resample, play
-from glyphtune.io.file import WavParameters, read_wav, read_wav_resample, write_wav
+from glyphtune.io.stream import (
+    StreamParameters,
+    StreamHandler,
+    PyAudioHandler,
+    record,
+    record_resample,
+    play,
+)
+from glyphtune.io.file import (
+    FileParameters,
+    FileHandler,
+    WavHandler,
+    read,
+    read_resample,
+    write,
+)
 
 __all__ = [
     "StreamParameters",
+    "StreamHandler",
+    "PyAudioHandler",
     "record",
     "record_resample",
     "play",
-    "WavParameters",
-    "read_wav",
-    "read_wav_resample",
-    "write_wav",
+    "FileParameters",
+    "FileHandler",
+    "WavHandler",
+    "read",
+    "read_resample",
+    "write",
 ]
