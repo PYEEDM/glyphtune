@@ -123,6 +123,8 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         **kwargs: Any,
     ) -> Signal | np.ndarray[Any, np.dtype[Any]]:
         converted_inputs = (np.asarray(operand) for operand in inputs)
+        if "out" in kwargs:
+            kwargs["out"] = tuple(np.asarray(out) for out in kwargs["out"])
         result_data = self.data.__array_ufunc__(
             ufunc, method, *converted_inputs, **kwargs
         )
