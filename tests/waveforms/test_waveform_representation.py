@@ -1,6 +1,7 @@
 """Tests for waveform representation."""
 
 from typing import override
+import sys
 import numpy as np
 from glyphtune import signal, waveforms
 
@@ -97,6 +98,35 @@ def test_operation_waveform_repr_with_operands_and_kwargs() -> None:
         f"{dummy_waveform_repr}, {dummy_waveform_repr}, kwarg=1)"
     )
     assert repr(nonsensical_waveform) == reference_repr
+
+
+def test_resample_waveform_repr() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    data = signal.Signal([[1, 2, 3], [2, 3, 4]])
+    wave = waveforms.ResampleWaveform(data, 10)
+
+    assert repr(wave) == f"ResampleWaveform(Signal(numpy.{repr(data)}), 10)"
+
+
+def test_resample_waveform_repr_with_time_multiplier_argument() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    data = signal.Signal([[1, 2, 3], [2, 3, 4]])
+    wave = waveforms.ResampleWaveform(data, 10, -1)
+
+    assert (
+        repr(wave)
+        == f"ResampleWaveform(Signal(numpy.{repr(data)}), 10, time_multiplier=-1)"
+    )
+
+
+def test_resample_waveform_repr_long_array_full() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    data = signal.Signal(np.zeros((1, 1001)))
+    wave = waveforms.ResampleWaveform(data, 10)
+
+    with np.printoptions(threshold=sys.maxsize):
+        data_full_repr = repr(data)
+    assert wave.full_repr() == f"ResampleWaveform(Signal(numpy.{data_full_repr}), 10)"
 
 
 def test_periodic_wave_repr() -> None:
