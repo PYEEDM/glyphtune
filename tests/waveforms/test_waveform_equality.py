@@ -59,6 +59,49 @@ def test_operation_waveform_inequality_kwargs() -> None:
     assert addition != also_addition
 
 
+def test_resample_waveform_equality() -> None:
+    """Ensure equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    also_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2, 3]]), 10, 0.2
+    )
+    assert resample_waveform == also_resample_waveform
+
+
+def test_resample_waveform_inequality_type() -> None:
+    """Ensure equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    not_resample_waveform = DummyWaveform()
+    assert resample_waveform != not_resample_waveform
+
+
+def test_resample_waveform_inequality_data() -> None:
+    """Ensure equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    other_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0, 3]]), 10, 0.2
+    )
+    assert resample_waveform != other_resample_waveform
+
+
+def test_resample_waveform_inequality_sampling_rate() -> None:
+    """Ensure equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    other_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0, 3]]), 11, 0.2
+    )
+    assert resample_waveform != other_resample_waveform
+
+
+def test_resample_waveform_inequality_time_multiplier() -> None:
+    """Ensure equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    other_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0, 3]]), 11, 0.25
+    )
+    assert resample_waveform != other_resample_waveform
+
+
 def test_periodic_wave_equality() -> None:
     """Ensure equality check result is as expected."""
     periodic_wave = waveforms.PeriodicWave(100, 1)

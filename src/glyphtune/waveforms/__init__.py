@@ -1,6 +1,7 @@
 """A hierarchy of classes for creating waveforms and sampling them into audio signals."""
 
 from glyphtune.waveforms.waveform import Waveform, OperationWaveform
+from glyphtune.waveforms.resampling import ResampleWaveform
 from glyphtune.waveforms.periodic_waves import (
     PeriodicWave,
     Sine,
@@ -19,6 +20,7 @@ from glyphtune.waveforms.modulation import (
 __all__ = [
     "Waveform",
     "OperationWaveform",
+    "ResampleWaveform",
     "PeriodicWave",
     "Sine",
     "Sawtooth",

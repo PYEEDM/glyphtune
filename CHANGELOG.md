@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Effects module (including base `Effect` class).
 - Stereo effects module (including `StereoPan`, `StereoLevels`, `StereoInterMix`, and `StereoDelay`).
+- Resampling module (including `ResampleWaveform` class).
 - Output stream with an arbitrary number of channels (`glyphtune.output.Stream`).
 - Output to wav file (`glyphtune.output.write_wav` and `glyphtune.output.WavParameters`)
 - `glyphtune.signal` module (including `Signal` class).

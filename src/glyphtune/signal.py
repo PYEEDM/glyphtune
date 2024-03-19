@@ -78,6 +78,24 @@ class Signal(np.lib.mixins.NDArrayOperatorsMixin):
         assert isinstance(result, np.ndarray)
         return result
 
+    def to_mono(self) -> Signal:
+        """Returns the signal converted to mono.
+
+        This is done by taking the mean along all channels of every sample.
+        """
+        return Signal(np.expand_dims(self.data.mean(axis=0), axis=0))
+
+    def expand_channels(self, channels: int) -> Signal:
+        """Returns the expansion of a mono signal into an arbitrary number of channels.
+
+        This is done by tiling copies of the mono signal for each channel.
+        """
+        if not self.is_mono:
+            raise ValueError("Can only expand channels of mono signal")
+        if channels < 1:
+            raise ValueError("Number of channels must be positive")
+        return Signal(np.tile(self.data, (channels, 1)))
+
     def normalize(self) -> Signal:
         """Returns the signal normalized between -1 and 1."""
         return Signal(self.data / self.absolute_peak)

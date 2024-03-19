@@ -142,6 +142,52 @@ def test_dc_offset() -> None:
     assert np.array_equal(sig.dc_offset, [2 / 3, -1 / 3])
 
 
+def test_to_mono_on_mono_signal_leaves_it_unchanged() -> None:
+    """Ensure converting already mono signal to mono leaves it unchanged."""
+    data = np.array([[1, -2, 3]])
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(sig.to_mono(), data)
+
+
+def test_to_mono_on_stereo_signal_returns_correct_result() -> None:
+    """Ensure converting stereo signal to mono returns correct result."""
+    data = np.array([[1, -2, 3], [1, 5, -7]])
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(sig.to_mono(), [[1, 3 / 2, -2]])
+
+
+def test_expand_channels_with_one_channel_leaves_data_unchanged() -> None:
+    """Ensure expanding channels from mono signal to mono signal leaves data unchanged."""
+    data = np.array([[1, -2, 3]])
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(sig.expand_channels(1), data)
+
+
+def test_expand_channels_returns_correct_result() -> None:
+    """Ensure expanding channels from mono signal to multiple channels tiles the data correctly."""
+    data = np.array([[1, -2, 3]])
+
+    sig = signal.Signal(data)
+
+    assert np.array_equal(sig.expand_channels(3), [[1, -2, 3]] * 3)
+
+
+def test_expand_channels_raises_valueerror_with_non_mono_signal() -> None:
+    """Ensure expanding channels on a non-mono signal raises a ValueError."""
+    data = np.array([[1, -2, 3], [1, 5, -7]])
+
+    sig = signal.Signal(data)
+
+    with pytest.raises(ValueError):
+        sig.expand_channels(4)
+
+
 def test_normalize() -> None:
     """Ensure signal normalization calculation is as expected."""
     data = np.array([[1, -2, 3], [1, 5, -7]])
