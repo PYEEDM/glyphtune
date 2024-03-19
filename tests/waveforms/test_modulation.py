@@ -22,8 +22,8 @@ def test_phase_modulation_shifts_time_by_modulator() -> None:
 
     phase_modulated_waveform = waveforms.phase_modulate(time_waveform, modulator)
 
-    modulated_signal = phase_modulated_waveform.sample_seconds(sampling_rate, duration)
-    time = time_waveform.sample_seconds(sampling_rate, duration)
-    modulator_signal = modulator.sample_seconds(sampling_rate, duration)
+    modulated_signal = phase_modulated_waveform.sample_seconds(duration, sampling_rate)
+    time = time_waveform.sample_seconds(duration, sampling_rate)
+    modulator_signal = modulator.sample_seconds(duration, sampling_rate)
     reference_signal = time + modulator_signal
     assert np.allclose(modulated_signal, reference_signal)

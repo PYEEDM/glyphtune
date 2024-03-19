@@ -30,8 +30,8 @@ def test_sample_dry() -> None:
 
     dummy_effect = DummyEffect(time_waveform, 0)
 
-    dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
-    reference_signal = time_waveform.sample_seconds(sampling_rate, duration)
+    dummy_effect_signal = dummy_effect.sample_seconds(duration, sampling_rate)
+    reference_signal = time_waveform.sample_seconds(duration, sampling_rate)
     assert np.array_equal(dummy_effect_signal, reference_signal)
 
 
@@ -43,8 +43,8 @@ def test_sample_wet() -> None:
 
     dummy_effect = DummyEffect(time_waveform, 1)
 
-    dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
-    reference_signal = time_waveform.sample_seconds(sampling_rate, duration) + 1
+    dummy_effect_signal = dummy_effect.sample_seconds(duration, sampling_rate)
+    reference_signal = time_waveform.sample_seconds(duration, sampling_rate) + 1
     assert np.array_equal(dummy_effect_signal, reference_signal)
 
 
@@ -56,8 +56,8 @@ def test_sample_negative_wet() -> None:
 
     dummy_effect = DummyEffect(time_waveform, -1)
 
-    dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
-    reference_signal = -time_waveform.sample_seconds(sampling_rate, duration) - 1
+    dummy_effect_signal = dummy_effect.sample_seconds(duration, sampling_rate)
+    reference_signal = -time_waveform.sample_seconds(duration, sampling_rate) - 1
     assert np.array_equal(dummy_effect_signal, reference_signal)
 
 
@@ -69,8 +69,8 @@ def test_sample_mixed() -> None:
 
     dummy_effect = DummyEffect(time_waveform, 0.5)
 
-    dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
-    reference_signal = time_waveform.sample_seconds(sampling_rate, duration) + 0.5
+    dummy_effect_signal = dummy_effect.sample_seconds(duration, sampling_rate)
+    reference_signal = time_waveform.sample_seconds(duration, sampling_rate) + 0.5
     assert np.allclose(dummy_effect_signal, reference_signal)
 
 
@@ -82,5 +82,5 @@ def test_sample_mixed_negative() -> None:
 
     dummy_effect = DummyEffect(time_waveform, -0.5)
 
-    dummy_effect_signal = dummy_effect.sample_seconds(sampling_rate, duration)
+    dummy_effect_signal = dummy_effect.sample_seconds(duration, sampling_rate)
     assert np.allclose(dummy_effect_signal, -0.5)
