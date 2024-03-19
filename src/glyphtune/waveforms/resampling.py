@@ -44,7 +44,7 @@ class ResampleWaveform(waveform.Waveform):
 
     @property
     def sampling_rate(self) -> int:
-        """The original sampling rate of the auio data, in samples per second."""
+        """The original sampling rate of the audio data, in samples per second."""
         return self.__sampling_rate
 
     @sampling_rate.setter
