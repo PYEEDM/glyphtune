@@ -55,6 +55,7 @@ version-file = "src/_glyphtune_version.py"
 
 
 [tool.pylint."MASTER"]
+max-args = 6
 ignore = "_glyphtune_version.py"
 
 
