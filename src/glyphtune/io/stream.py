@@ -1,108 +1,112 @@
 """Streaming audio output."""
 
+import dataclasses
 import sys
 import numpy as np
 import pyaudio
 from glyphtune import signal, waveforms
 
 
-class IOStream:
-    """Audio I/O stream."""
+@dataclasses.dataclass
+class StreamParameters:
+    """Parameters used in audio stream I/O.
 
-    def __init__(
-        self, sampling_rate: int = 44100, buffer_size: int = 512, channels: int = 2
-    ) -> None:
-        """Initializes an audio I/O stream.
+    Attributes:
+        channels: number of channels.
+        sampling_rate: the sampling rate in samples per second.
+        buffer_size: the size of chunks to be streamed in samples.
+    """
 
-        Args:
-            sampling_rate: the sampling rate to use in samples per second.
-            buffer_size: the size of chunks to be streamed in samples.
-            channels: number of channels.
-        """
-        self.sampling_rate = sampling_rate
-        self.buffer_size = buffer_size
-        self.channels = channels
+    channels: int = 2
+    sampling_rate: int = 44100
+    buffer_size: int = 512
 
-    @property
-    def sampling_rate(self) -> int:
-        """Sampling rate of the stream."""
-        return self.__sampling_rate
 
-    @sampling_rate.setter
-    def sampling_rate(self, value: int) -> None:
-        if value <= 0:
-            raise ValueError("Sampling rate must be positive")
-        self.__sampling_rate = value
+def play(
+    waveform: waveforms.Waveform,
+    duration: float = np.inf,
+    start_offset: float = 0,
+    stream_parameters: StreamParameters = StreamParameters(),
+) -> None:
+    """Samples and streams a waveform's output.
 
-    @property
-    def buffer_size(self) -> int:
-        """Buffer size of the stream."""
-        return self.__buffer_size
+    Args:
+        waveform: waveform to be streamed.
+        duration: the duration of time to sample the waveform for output, in seconds.
+            If set to infinity, playback will continue until interrupted.
+            Note that the playback may last longer than the specified duration until
+            the last buffer is over. This is more noticeable with a large `buffer_size`.
+        start_offset: the starting offset with which to sample the waveform for output,
+            in seconds.
+        stream_parameters: the stream parameters to use.
+    """
+    py_audio = pyaudio.PyAudio()
+    stream = py_audio.open(
+        stream_parameters.sampling_rate,
+        stream_parameters.channels,
+        pyaudio.paFloat32,
+        output=True,
+    )
+    start_sample = int(start_offset * stream_parameters.sampling_rate)
+    end_chunk = np.ceil(
+        duration * stream_parameters.sampling_rate / stream_parameters.buffer_size
+    )
+    chunk_number = 0
+    try:
+        while chunk_number < end_chunk:
+            chunk_signal = waveform.sample_samples(
+                stream_parameters.sampling_rate,
+                stream_parameters.buffer_size,
+                start_sample + chunk_number * stream_parameters.buffer_size,
+                stream_parameters.channels,
+            )
+            chunk_signal_bytes = chunk_signal.data.astype(np.float32).tobytes("F")
+            stream.write(chunk_signal_bytes, stream_parameters.buffer_size)
+            chunk_number += 1
+    except (SystemExit, KeyboardInterrupt):
+        stream.stop_stream()
+        stream.close()
+        py_audio.terminate()
 
-    @buffer_size.setter
-    def buffer_size(self, value: int) -> None:
-        if value <= 0:
-            raise ValueError("Buffer size must be positive")
-        self.__buffer_size = value
 
-    @property
-    def channels(self) -> int:
-        """Number of channels of the stream."""
-        return self.__channels
+def record(
+    duration: float = np.inf, stream_parameters: StreamParameters = StreamParameters(1)
+) -> signal.Signal:
+    """Returns signal of recorded audio input.
 
-    @channels.setter
-    def channels(self, value: int) -> None:
-        if value <= 0:
-            raise ValueError("Number of channels must be positive")
-        self.__channels = value
-
-    def play(self, waveform: waveforms.Waveform) -> None:
-        """Samples and streams a waveform's output until interrupted.
-
-        Args:
-            waveform: waveform to be streamed.
-        """
-        py_audio = pyaudio.PyAudio()
-        stream = py_audio.open(
-            self.sampling_rate, self.channels, pyaudio.paFloat32, output=True
+    Args:
+        duration: the duration of time to record input, in seconds.
+            If set to infinity, recording will continue until interrupted.
+            Note that the recording may last longer than the specified duration until
+            the last buffer is over. This is more noticeable with a large `buffer_size`.
+        stream_parameters: the stream parameters to use.
+    """
+    py_audio = pyaudio.PyAudio()
+    stream = py_audio.open(
+        stream_parameters.sampling_rate,
+        stream_parameters.channels,
+        pyaudio.paFloat32,
+        input=True,
+    )
+    end_chunk = np.ceil(
+        duration * stream_parameters.sampling_rate / stream_parameters.buffer_size
+    )
+    read_bytes = bytes()
+    chunks = 0
+    try:
+        while chunks < end_chunk:
+            read_bytes += stream.read(stream_parameters.buffer_size)
+            chunks += 1
+    except (KeyboardInterrupt, SystemExit) as exception:
+        stream.stop_stream()
+        stream.close()
+        py_audio.terminate()
+        if isinstance(exception, SystemExit):
+            sys.exit()
+    read_array_flat = np.frombuffer(read_bytes, dtype=np.float32)
+    read_signal = signal.Signal(
+        read_array_flat.reshape(
+            (stream_parameters.channels, stream_parameters.buffer_size * chunks)
         )
-        chunk_number = 0
-        try:
-            while True:
-                chunk_signal = waveform.sample_samples(
-                    self.sampling_rate,
-                    self.buffer_size,
-                    chunk_number * self.buffer_size,
-                    self.channels,
-                )
-                chunk_signal_bytes = chunk_signal.data.astype(np.float32).tobytes("F")
-                stream.write(chunk_signal_bytes, self.buffer_size)
-                chunk_number += 1
-        except (SystemExit, KeyboardInterrupt):
-            stream.stop_stream()
-            stream.close()
-            py_audio.terminate()
-
-    def record(self) -> signal.Signal:
-        """Returns signal of audio input that is recorded until interrupted."""
-        py_audio = pyaudio.PyAudio()
-        stream = py_audio.open(
-            self.sampling_rate, self.channels, pyaudio.paFloat32, input=True
-        )
-        read_bytes = bytes()
-        chunks = 0
-        try:
-            while True:
-                read_bytes += stream.read(self.buffer_size)
-                chunks += 1
-        except (KeyboardInterrupt, SystemExit) as exception:
-            stream.stop_stream()
-            stream.close()
-            py_audio.terminate()
-            if isinstance(exception, SystemExit):
-                sys.exit()
-        read_array_flat = np.frombuffer(read_bytes, dtype=np.float32)
-        read_signal = signal.Signal(
-            read_array_flat.reshape((self.channels, self.buffer_size * chunks))
-        )
-        return read_signal
+    )
+    return read_signal
