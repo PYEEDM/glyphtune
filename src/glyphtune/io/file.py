@@ -68,7 +68,7 @@ def write_wav(
         wav_parameters: wav file output parameters.
     """
     sig = waveform.sample_seconds(
-        wav_parameters.sampling_rate, duration, start_offset, wav_parameters.channels
+        duration, wav_parameters.sampling_rate, start_offset, wav_parameters.channels
     )
     type_code = f"i{wav_parameters.sample_width}"
     type_max = np.iinfo(type_code).max

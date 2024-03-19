@@ -36,16 +36,16 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
 
     def sample_seconds(
         self,
-        sampling_rate: int,
-        duration: float,
+        duration: float = 1,
+        sampling_rate: int = 44100,
         start_offset: float = 0,
         channels: int = 2,
     ) -> signal.Signal:
         """Samples audio data given time information in seconds.
 
         Args:
-            sampling_rate: the sampling rate to use in samples per second.
             duration: the duration of time to be sampled in seconds.
+            sampling_rate: the sampling rate to use in samples per second.
             start_offset: the starting offset in seconds.
             channels: the number of channels to return.
 
@@ -65,13 +65,17 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
         return self.sample_time(signal.Signal(time_array))
 
     def sample_samples(
-        self, sampling_rate: int, count: int, start_offset: int = 0, channels: int = 2
+        self,
+        count: int = 44100,
+        sampling_rate: int = 44100,
+        start_offset: int = 0,
+        channels: int = 2,
     ) -> signal.Signal:
         """Samples audio data given sample count information.
 
         Args:
-            sampling_rate: the sampling rate to use in samples per second.
             count: the number of samples to take.
+            sampling_rate: the sampling rate to use in samples per second.
             start_offset: the starting offset in samples.
             channels: the number of channels to return.
 
@@ -87,7 +91,7 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
         duration_seconds = count / sampling_rate
         start_offset_seconds = start_offset / sampling_rate
         return self.sample_seconds(
-            sampling_rate, duration_seconds, start_offset_seconds, channels
+            duration_seconds, sampling_rate, start_offset_seconds, channels
         )
 
     @override

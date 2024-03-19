@@ -55,8 +55,8 @@ def play(
     try:
         while chunk_number < end_chunk:
             chunk_signal = waveform.sample_samples(
-                stream_parameters.sampling_rate,
                 stream_parameters.buffer_size,
+                stream_parameters.sampling_rate,
                 start_sample + chunk_number * stream_parameters.buffer_size,
                 stream_parameters.channels,
             )

@@ -21,7 +21,7 @@ def test_adding_two_waveforms() -> None:
 
     addition_waveform = dummy_waveform + dummy_waveform
 
-    addition_signal = addition_waveform.sample_seconds(sampling_rate, duration)
+    addition_signal = addition_waveform.sample_seconds(duration, sampling_rate)
     reference_addition_signal = np.full((2, int(sampling_rate * duration)), 2)
     assert np.array_equal(addition_signal, reference_addition_signal)
 
@@ -34,7 +34,7 @@ def test_adding_waveform_and_float() -> None:
 
     addition_waveform = dummy_waveform + 2.3
 
-    addition_signal = addition_waveform.sample_seconds(sampling_rate, duration)
+    addition_signal = addition_waveform.sample_seconds(duration, sampling_rate)
     reference_addition_signal = np.full((2, int(sampling_rate * duration)), 3.3)
     assert np.array_equal(addition_signal, reference_addition_signal)
 
@@ -47,7 +47,7 @@ def test_multiplying_waveform_and_float() -> None:
 
     addition_waveform = dummy_waveform * 0.5
 
-    addition_signal = addition_waveform.sample_seconds(sampling_rate, duration)
+    addition_signal = addition_waveform.sample_seconds(duration, sampling_rate)
     reference_addition_signal = np.full((2, int(sampling_rate * duration)), 0.5)
     assert np.array_equal(addition_signal, reference_addition_signal)
 
@@ -69,6 +69,6 @@ def test_custom_operation_waveform() -> None:
 
     add_mod_waveform = waveforms.OperationWaveform(add_mod, dummy_waveform, 4.2, mod=3)
 
-    add_mod_signal = add_mod_waveform.sample_seconds(sampling_rate, duration)
+    add_mod_signal = add_mod_waveform.sample_seconds(duration, sampling_rate)
     reference_add_mod_signal = np.full((2, int(sampling_rate * duration)), 2.2)
     assert np.array_equal(add_mod_signal, reference_add_mod_signal)

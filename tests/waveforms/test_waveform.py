@@ -22,7 +22,7 @@ def test_sample_seconds_creates_time_signal_with_correct_shape() -> None:
     channels = 5
     time_waveform = TimeWaveform()
 
-    time = time_waveform.sample_seconds(sampling_rate, duration, channels=channels)
+    time = time_waveform.sample_seconds(duration, sampling_rate, channels=channels)
 
     assert time.shape == (channels, math.ceil(sampling_rate * duration))
 
@@ -33,7 +33,7 @@ def test_sample_seconds_creates_evenly_spaced_time_signal() -> None:
     duration = 1.4
     time_waveform = TimeWaveform()
 
-    time = time_waveform.sample_seconds(sampling_rate, duration, channels=1)
+    time = time_waveform.sample_seconds(duration, sampling_rate, channels=1)
 
     time_differences = np.diff(np.squeeze(time))
     assert time_differences == pytest.approx(time_differences[0])
@@ -47,7 +47,7 @@ def test_sample_seconds_time_signal_first_value_equals_offset() -> None:
     time_waveform = TimeWaveform()
 
     time = time_waveform.sample_seconds(
-        sampling_rate, duration, start_offset, channels=1
+        duration, sampling_rate, start_offset, channels=1
     )
 
     assert time[0, 0] == start_offset
@@ -60,6 +60,6 @@ def test_sample_samples_creates_time_signal_with_correct_shape() -> None:
     channels = 2
     time_waveform = TimeWaveform()
 
-    time = time_waveform.sample_samples(sampling_rate, count, channels=channels)
+    time = time_waveform.sample_samples(count, sampling_rate, channels=channels)
 
     assert time.shape == (channels, count)
