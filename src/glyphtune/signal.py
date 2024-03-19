@@ -178,4 +178,4 @@ def is_signal_like(data: npt.ArrayLike) -> bool:
 
 
 def _is_real(dtype: np.dtype[Any]) -> bool:
-    return np.issubdtype(dtype, np.float_) or np.issubdtype(dtype, np.int_)
+    return np.issubdtype(dtype, np.floating) or np.issubdtype(dtype, np.integer)

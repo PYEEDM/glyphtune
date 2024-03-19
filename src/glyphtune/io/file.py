@@ -4,12 +4,12 @@ import dataclasses
 import pathlib
 import wave
 import numpy as np
-from glyphtune import waveforms
+from glyphtune import signal, waveforms
 
 
 @dataclasses.dataclass
 class WavParameters:
-    """Parameters used in wav file output.
+    """Parameters used in wav file I/O.
 
     Attributes:
         channels: number of channels.
@@ -20,6 +20,35 @@ class WavParameters:
     channels: int = 2
     sample_width: int = 4
     sampling_rate: int = 44100
+
+
+def read_wav(path: pathlib.Path) -> tuple[WavParameters, signal.Signal]:
+    """Reads a wav file.
+
+    Args:
+        path: the path of the input file.
+
+    Returns:
+        A tuple `(wav_parameters, read_signal)` containing the metadata and data read from the file.
+    """
+    wave_read = wave.Wave_read(str(path))
+    wav_parameters = WavParameters(
+        wave_read.getnchannels(),
+        wave_read.getsampwidth(),
+        wave_read.getframerate(),
+    )
+
+    length = wave_read.getnframes()
+    read_bytes = wave_read.readframes(length)
+    type_code = f"i{wav_parameters.sample_width}"
+    type_max = np.iinfo(type_code).max
+    read_array_flat = (
+        np.frombuffer(read_bytes, dtype=type_code).astype(np.float32) / type_max
+    )
+    read_signal = signal.Signal(
+        read_array_flat.reshape((wav_parameters.channels, length))
+    )
+    return wav_parameters, read_signal
 
 
 def write_wav(
@@ -38,12 +67,12 @@ def write_wav(
         wav_parameters: wav file output parameters.
         start_offset: the starting offset with which to sample the waveform for output, in seconds.
     """
-    signal = waveform.sample_seconds(
+    sig = waveform.sample_seconds(
         wav_parameters.sampling_rate, duration, start_offset, wav_parameters.channels
     )
     type_code = f"i{wav_parameters.sample_width}"
     type_max = np.iinfo(type_code).max
-    retyped_signal = np.asarray(signal * type_max).astype(type_code)
+    retyped_signal = np.asarray(sig * type_max).astype(type_code)
     signal_bytes = retyped_signal.tobytes("F")
     wave_write = wave.Wave_write(str(path))
     wave_write.setnchannels(wav_parameters.channels)
