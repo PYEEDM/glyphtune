@@ -55,8 +55,8 @@ def write_wav(
     waveform: waveforms.Waveform,
     path: pathlib.Path,
     duration: float,
-    wav_parameters: WavParameters = WavParameters(),
     start_offset: float = 0,
+    wav_parameters: WavParameters = WavParameters(),
 ) -> None:
     """Writes waveform to wav file.
 
@@ -64,8 +64,8 @@ def write_wav(
         waveform: the waveform to write.
         path: the path of the output file.
         duration: the duration of time to sample the waveform for output, in seconds.
-        wav_parameters: wav file output parameters.
         start_offset: the starting offset with which to sample the waveform for output, in seconds.
+        wav_parameters: wav file output parameters.
     """
     sig = waveform.sample_seconds(
         wav_parameters.sampling_rate, duration, start_offset, wav_parameters.channels
