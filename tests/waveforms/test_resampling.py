@@ -174,3 +174,17 @@ def test_non_default_resampling_pads_with_zeros_for_time_values_with_no_data() -
     assert np.array_equal(
         resampled_signal, signal.Signal([padding + [3, 1, 0, 0] + padding] * 2)
     )
+
+
+def test_resampling_signal_with_looping() -> None:
+    """Ensure resampling a signal with looping gives expected results."""
+    sampling_rate = 4
+    duration = 10
+    sig = signal.Signal([[0, 1, 2, 3]] * 2)
+
+    resample_waveform = waveforms.ResampleWaveform(sig, sampling_rate, loop=True)
+    resampled_signal = resample_waveform.sample_seconds(duration, sampling_rate)
+
+    assert np.array_equal(
+        resampled_signal, signal.Signal([[0, 1, 2, 3] * duration] * 2)
+    )
