@@ -113,6 +113,10 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
                 return NotImplemented
         return OperationWaveform(ufunc, *inputs, **kwargs)
 
+    @override
+    def __ne__(self, other: Any) -> Any:
+        return not self == other
+
 
 class OperationWaveform(Waveform):
     """Waveform that is the result of an operation on other waveforms and numbers.
