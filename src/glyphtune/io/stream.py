@@ -64,27 +64,41 @@ class PyAudioHandler(StreamHandler):
         self, stream_parameters: StreamParameters = StreamParameters()
     ) -> None:
         super().__init__(stream_parameters)
+        self.__input_enabled = False
+        self.__output_enabled = False
         self.__py_audio = pyaudio.PyAudio()
+        self.__stream: pyaudio.Stream | None = None
+
+    def _update_stream(self) -> None:
         self.__stream = self.__py_audio.open(
             self.stream_parameters.sampling_rate,
             self.stream_parameters.channels,
             pyaudio.paFloat32,
-            input=True,
-            output=True,
+            input=self.__input_enabled,
+            output=self.__output_enabled,
         )
 
     @override
     def read(self, size: int) -> bytes:
+        if not self.__input_enabled:
+            self.__input_enabled = True
+            self._update_stream()
+        assert self.__stream is not None
         return self.__stream.read(size)
 
     @override
     def write(self, data: bytes, size: int) -> None:
+        if not self.__output_enabled:
+            self.__output_enabled = True
+            self._update_stream()
+        assert self.__stream is not None
         self.__stream.write(data, size)
 
     @override
     def close(self) -> None:
-        self.__stream.stop_stream()
-        self.__stream.close()
+        if self.__stream is not None:
+            self.__stream.stop_stream()
+            self.__stream.close()
         self.__py_audio.terminate()
 
 
