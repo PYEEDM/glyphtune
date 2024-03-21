@@ -114,6 +114,7 @@ class ResampleWaveform(waveform.Waveform):
             )
             and self.sampling_rate == other.sampling_rate
             and self.time_multiplier == other.time_multiplier
+            and self.loop == other.loop
         )
 
     @override
@@ -124,6 +125,7 @@ class ResampleWaveform(waveform.Waveform):
             and np.array_equal(self.original_audio, other.original_audio)
             and self.sampling_rate == other.sampling_rate
             and self.time_multiplier == other.time_multiplier
+            and self.loop == other.loop
         )
 
     @override
@@ -132,4 +134,12 @@ class ResampleWaveform(waveform.Waveform):
         time_multiplier_repr = _strings.optional_param_repr(
             "time_multiplier", 1, self.time_multiplier
         )
-        return f"{class_name}({self.original_audio}, {self.sampling_rate}{time_multiplier_repr})"
+        loop_repr = _strings.optional_param_repr("loop", False, self.loop)
+        return (
+            f"{class_name}("
+            f"{self.original_audio}, "
+            f"{self.sampling_rate}"
+            f"{time_multiplier_repr}"
+            f"{loop_repr}"
+            ")"
+        )

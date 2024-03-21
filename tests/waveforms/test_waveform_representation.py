@@ -116,6 +116,25 @@ def test_resample_waveform_repr_with_time_multiplier_argument() -> None:
     assert repr(wave) == f"ResampleWaveform({repr(sig)}, 10, time_multiplier=-1)"
 
 
+def test_resample_waveform_repr_with_loop_argument() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    sig = signal.Signal([[1, 2, 3], [2, 3, 4]])
+    wave = waveforms.ResampleWaveform(sig, 10, loop=True)
+
+    assert repr(wave) == f"ResampleWaveform({repr(sig)}, 10, loop=True)"
+
+
+def test_resample_waveform_repr_with_time_multiplier_and_loop_arguments() -> None:
+    """Ensure the representation of the waveform is as expected."""
+    sig = signal.Signal([[1, 2, 3], [2, 3, 4]])
+    wave = waveforms.ResampleWaveform(sig, 10, -1.02, True)
+
+    reference_repr = (
+        f"ResampleWaveform({repr(sig)}, 10, time_multiplier=-1.02, loop=True)"
+    )
+    assert repr(wave) == reference_repr
+
+
 def test_resample_waveform_repr_long_array_full() -> None:
     """Ensure the representation of the waveform is as expected."""
     sig = signal.Signal(np.zeros((1, 1001)))
