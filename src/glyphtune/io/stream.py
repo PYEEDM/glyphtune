@@ -114,9 +114,10 @@ def record(
             read_bytes += handler.read(stream_parameters.buffer_size)
             chunks += 1
     except (KeyboardInterrupt, SystemExit) as exception:
-        handler.close()
         if isinstance(exception, SystemExit):
+            handler.close()
             sys.exit()
+    handler.close()
     read_array_flat = np.frombuffer(read_bytes, dtype=np.float32)
     read_signal = signal.Signal(
         read_array_flat.reshape(
@@ -151,8 +152,8 @@ def record_resample(
 def play(
     waveform: waveforms.Waveform,
     duration: float = np.inf,
-    start_offset: float = 0,
     stream_parameters: StreamParameters = StreamParameters(),
+    start_offset: float = 0,
     handler_type: type[StreamHandler] = PyAudioHandler,
 ) -> None:
     """Samples and streams a waveform's output.
@@ -186,4 +187,5 @@ def play(
             handler.write(chunk_signal_bytes, stream_parameters.buffer_size)
             chunk_number += 1
     except (SystemExit, KeyboardInterrupt):
-        handler.close()
+        ...
+    handler.close()

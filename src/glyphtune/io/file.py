@@ -19,8 +19,8 @@ class FileParameters:
     """
 
     channels: int = 2
-    sample_width: int = 4
     sampling_rate: int = 44100
+    sample_width: int = 4
 
 
 class FileHandler:
@@ -57,7 +57,7 @@ class WavHandler(FileHandler):
     def read(self) -> tuple[FileParameters, bytes]:
         wave_read = wave.Wave_read(str(self.path))
         parameters = FileParameters(
-            wave_read.getnchannels(), wave_read.getsampwidth(), wave_read.getnframes()
+            wave_read.getnchannels(), wave_read.getnframes(), wave_read.getsampwidth()
         )
         read_bytes = wave_read.readframes(wave_read.getnframes())
         return parameters, read_bytes
@@ -132,8 +132,8 @@ def write(
     waveform: waveforms.Waveform,
     path: pathlib.Path,
     duration: float,
+    parameters: FileParameters,
     start_offset: float = 0,
-    parameters: FileParameters = FileParameters(),
     handler_type: type[FileHandler] | None = None,
 ) -> None:
     """Writes waveform to file.
