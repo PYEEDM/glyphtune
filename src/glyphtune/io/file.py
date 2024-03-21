@@ -30,8 +30,8 @@ class FileHandler:
         path: the path of the file being handled.
     """
 
-    def __init__(self, path: pathlib.Path):
-        self.path = path
+    def __init__(self, path: pathlib.Path | str):
+        self.path = pathlib.Path(path)
 
     def read(self) -> tuple[FileParameters, bytes]:
         """Reads an audio file.
@@ -75,15 +75,15 @@ class WavHandler(FileHandler):
 _extension_to_handler = {".wav": WavHandler}
 
 
-def _infer_handler(file_extension: str) -> type[FileHandler]:
+def _infer_handler(path: pathlib.Path | str) -> type[FileHandler]:
     try:
-        return _extension_to_handler[file_extension]
+        return _extension_to_handler[pathlib.Path(path).suffix]
     except KeyError as exception:
         raise ValueError("Unsupported file extension") from exception
 
 
 def read(
-    path: pathlib.Path, handler_type: type[FileHandler] | None = None
+    path: pathlib.Path | str, handler_type: type[FileHandler] | None = None
 ) -> tuple[FileParameters, signal.Signal]:
     """Reads an audio file.
 
@@ -96,7 +96,7 @@ def read(
         A tuple `(parameters, read_signal)` containing metadata and data read from the file.
     """
     if handler_type is None:
-        handler_type = _infer_handler(path.suffix)
+        handler_type = _infer_handler(path)
     handler = handler_type(path)
     parameters, read_bytes = handler.read()
     type_code = f"i{parameters.sample_width}"
@@ -112,7 +112,7 @@ def read(
 
 
 def read_resample(
-    path: pathlib.Path, handler_type: type[FileHandler] | None = None
+    path: pathlib.Path | str, handler_type: type[FileHandler] | None = None
 ) -> waveforms.ResampleWaveform:
     """Reads an aduio file into a resample waveform.
 
@@ -130,7 +130,7 @@ def read_resample(
 
 def write(
     waveform: waveforms.Waveform,
-    path: pathlib.Path,
+    path: pathlib.Path | str,
     duration: float,
     parameters: FileParameters,
     start_offset: float = 0,
@@ -148,7 +148,7 @@ def write(
             If None, an attempt will be made to find the right handler type from the file extension.
     """
     if handler_type is None:
-        handler_type = _infer_handler(path.suffix)
+        handler_type = _infer_handler(path)
     sig = waveform.sample_seconds(
         duration, parameters.sampling_rate, start_offset, parameters.channels
     )
