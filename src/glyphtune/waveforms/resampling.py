@@ -13,6 +13,7 @@ class ResampleWaveform(waveform.Waveform):
 
     Attributes:
         time_multiplier: time/speed multiplier. Can be negative for reverse resampling.
+        loop: whether to replay the sample after it finishes.
     """
 
     def __init__(
@@ -20,6 +21,7 @@ class ResampleWaveform(waveform.Waveform):
         original_audio: signal.Signal,
         sampling_rate: int,
         time_multiplier: float = 1,
+        loop: bool = False,
     ) -> None:
         """Initializes a resample waveform with audio data.
 
@@ -27,11 +29,13 @@ class ResampleWaveform(waveform.Waveform):
             original_audio: signal containing the audio data to resample.
             sampling_rate: the original sampling rate of `original_audio`, in samples per second.
             time_multiplier: time/speed multiplier. Can be negative for reverse resampling.
+            loop: whether to replay the sample after it finishes.
         """
         super().__init__()
         self.original_audio = original_audio
         self.sampling_rate = sampling_rate
         self.time_multiplier = time_multiplier
+        self.loop = loop
 
     @property
     def original_audio(self) -> signal.Signal:
@@ -69,10 +73,14 @@ class ResampleWaveform(waveform.Waveform):
         sample_indices = np.array(np.round(scaled_time), dtype=int)
         if self.time_multiplier < 0:
             sample_indices += audio.length - 1
-        indices_outside_data = np.logical_or(
-            sample_indices < 0, sample_indices >= audio.length
-        )
-        sample_indices[indices_outside_data] = 0
+        if self.loop:
+            sample_indices %= audio.length
+            indices_outside_data = np.empty(0, dtype=int)
+        else:
+            indices_outside_data = np.logical_or(
+                sample_indices < 0, sample_indices >= audio.length
+            )
+            sample_indices[indices_outside_data] = 0
         result = signal.Signal(np.take_along_axis(audio.data, sample_indices, axis=1))
         result[indices_outside_data] = 0
         return result
