@@ -102,6 +102,80 @@ def test_resample_waveform_inequality_time_multiplier() -> None:
     assert resample_waveform != other_resample_waveform
 
 
+def test_resample_waveform_approx_equality_exact_match() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    also_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2, 3]]), 10, 0.2
+    )
+    assert resample_waveform.approx_equal(also_resample_waveform)
+
+
+def test_resample_waveform_approx_equality_inexact_match_data_type() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    also_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0, 3]]), 10, 0.2
+    )
+    assert resample_waveform.approx_equal(also_resample_waveform)
+
+
+def test_resample_waveform_approx_equality_inexact_match_data_absolute() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    also_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0001, 3]]), 10, 0.2
+    )
+    assert resample_waveform.approx_equal(
+        also_resample_waveform, absolute_tolerance=0.001
+    )
+
+
+def test_resample_waveform_approx_equality_inexact_match_data_relative() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    also_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.15, 3]]), 10, 0.2
+    )
+    assert resample_waveform.approx_equal(
+        also_resample_waveform, relative_tolerance=0.1
+    )
+
+
+def test_resample_waveform_approx_inequality_type() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    not_resample_waveform = DummyWaveform()
+    assert not resample_waveform.approx_equal(not_resample_waveform)
+
+
+def test_resample_waveform_approx_inequality_data() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    other_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0001, 3]]), 10, 0.2
+    )
+    assert not resample_waveform.approx_equal(other_resample_waveform)
+
+
+def test_resample_waveform_approx_inequality_sampling_rate() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    other_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0, 3]]), 11, 0.2
+    )
+    assert not resample_waveform.approx_equal(other_resample_waveform)
+
+
+def test_resample_waveform_approx_inequality_time_multiplier() -> None:
+    """Ensure approximate equality check result is as expected."""
+    resample_waveform = waveforms.ResampleWaveform(signal.Signal([[1, 2, 3]]), 10, 0.2)
+    other_resample_waveform = waveforms.ResampleWaveform(
+        signal.Signal([[1, 2.0, 3]]), 11, 0.25
+    )
+    assert not resample_waveform.approx_equal(other_resample_waveform)
+
+
 def test_periodic_wave_equality() -> None:
     """Ensure equality check result is as expected."""
     periodic_wave = waveforms.PeriodicWave(100, 1)

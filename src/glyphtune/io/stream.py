@@ -64,27 +64,41 @@ class PyAudioHandler(StreamHandler):
         self, stream_parameters: StreamParameters = StreamParameters()
     ) -> None:
         super().__init__(stream_parameters)
+        self.__input_enabled = False
+        self.__output_enabled = False
         self.__py_audio = pyaudio.PyAudio()
+        self.__stream: pyaudio.Stream | None = None
+
+    def _update_stream(self) -> None:
         self.__stream = self.__py_audio.open(
             self.stream_parameters.sampling_rate,
             self.stream_parameters.channels,
             pyaudio.paFloat32,
-            input=True,
-            output=True,
+            input=self.__input_enabled,
+            output=self.__output_enabled,
         )
 
     @override
     def read(self, size: int) -> bytes:
+        if not self.__input_enabled:
+            self.__input_enabled = True
+            self._update_stream()
+        assert self.__stream is not None
         return self.__stream.read(size)
 
     @override
     def write(self, data: bytes, size: int) -> None:
+        if not self.__output_enabled:
+            self.__output_enabled = True
+            self._update_stream()
+        assert self.__stream is not None
         self.__stream.write(data, size)
 
     @override
     def close(self) -> None:
-        self.__stream.stop_stream()
-        self.__stream.close()
+        if self.__stream is not None:
+            self.__stream.stop_stream()
+            self.__stream.close()
         self.__py_audio.terminate()
 
 
@@ -114,9 +128,10 @@ def record(
             read_bytes += handler.read(stream_parameters.buffer_size)
             chunks += 1
     except (KeyboardInterrupt, SystemExit) as exception:
-        handler.close()
         if isinstance(exception, SystemExit):
+            handler.close()
             sys.exit()
+    handler.close()
     read_array_flat = np.frombuffer(read_bytes, dtype=np.float32)
     read_signal = signal.Signal(
         read_array_flat.reshape(
@@ -151,8 +166,8 @@ def record_resample(
 def play(
     waveform: waveforms.Waveform,
     duration: float = np.inf,
-    start_offset: float = 0,
     stream_parameters: StreamParameters = StreamParameters(),
+    start_offset: float = 0,
     handler_type: type[StreamHandler] = PyAudioHandler,
 ) -> None:
     """Samples and streams a waveform's output.
@@ -186,4 +201,5 @@ def play(
             handler.write(chunk_signal_bytes, stream_parameters.buffer_size)
             chunk_number += 1
     except (SystemExit, KeyboardInterrupt):
-        handler.close()
+        ...
+    handler.close()

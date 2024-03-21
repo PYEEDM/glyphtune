@@ -82,6 +82,32 @@ class ResampleWaveform(waveform.Waveform):
         with np.printoptions(threshold=sys.maxsize):
             return repr(self)
 
+    def approx_equal(
+        self,
+        other: Any,
+        absolute_tolerance: float = 1.0e-5,
+        relative_tolerance: float = 1.0e-8,
+    ) -> bool:
+        """Returns whether this waveform is approximately equal to another within a tolerence.
+
+        Args:
+            other: waveform to compare to.
+            absolute_tolerance: the absolute tolerance of the comparison.
+            relative_tolerance: the relative tolerance of the comparison.
+        """
+        return (
+            isinstance(other, ResampleWaveform)
+            and type(self) is type(other)
+            and np.allclose(
+                self.original_audio,
+                other.original_audio,
+                relative_tolerance,
+                absolute_tolerance,
+            )
+            and self.sampling_rate == other.sampling_rate
+            and self.time_multiplier == other.time_multiplier
+        )
+
     @override
     def __eq__(self, other: Any) -> Any:
         return (
