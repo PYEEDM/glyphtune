@@ -34,36 +34,6 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
             f"Attempted to sample a base {type(self).__name__} object"
         )
 
-    def sample_seconds(
-        self,
-        duration: float = 1,
-        sampling_rate: int = 44100,
-        start_offset: float = 0,
-        channels: int = 2,
-    ) -> signal.Signal:
-        """Samples audio data given time information in seconds.
-
-        Args:
-            duration: the duration of time to be sampled in seconds.
-            sampling_rate: the sampling rate to use in samples per second.
-            start_offset: the starting offset in seconds.
-            channels: the number of channels to return.
-
-        Returns:
-            The sampled signal of the waveform.
-                The returned signal will have the shape `(channels, ceil(sampling_rate*duration))`,
-                containing `ceil(sampling_rate*duration)` samples for each channel.
-        """
-        if sampling_rate <= 0:
-            raise ValueError("Sampling rate must be positive")
-        if channels <= 0:
-            raise ValueError("Number of channels must be positive")
-        end = start_offset + duration
-        sampling_period = 1 / sampling_rate
-        time_array = np.arange(start_offset, end, sampling_period)
-        time_array = np.tile(time_array, (channels, 1))
-        return self.sample_time(signal.Signal(time_array))
-
     def sample_samples(
         self,
         count: int | None = None,
@@ -90,10 +60,38 @@ class Waveform(np.lib.mixins.NDArrayOperatorsMixin):
             raise ValueError("Number of channels must be positive")
         if count is None:
             count = sampling_rate
-        duration_seconds = count / sampling_rate
-        start_offset_seconds = start_offset / sampling_rate
-        return self.sample_seconds(
-            duration_seconds, sampling_rate, start_offset_seconds, channels
+        time_array = np.arange(start_offset, start_offset + count) / sampling_rate
+        time = signal.Signal(np.tile(time_array, (channels, 1)))
+        return self.sample_time(time)
+
+    def sample_seconds(
+        self,
+        duration: float = 1,
+        sampling_rate: int = 44100,
+        start_offset: float = 0,
+        channels: int = 2,
+    ) -> signal.Signal:
+        """Samples audio data given time information in seconds.
+
+        Args:
+            duration: the duration of time to be sampled in seconds.
+            sampling_rate: the sampling rate to use in samples per second.
+            start_offset: the starting offset in seconds.
+            channels: the number of channels to return.
+
+        Returns:
+            The sampled signal of the waveform.
+                The returned signal will have the shape `(channels, ceil(sampling_rate*duration))`,
+                containing `ceil(sampling_rate*duration)` samples for each channel.
+        """
+        if sampling_rate <= 0:
+            raise ValueError("Sampling rate must be positive")
+        if channels <= 0:
+            raise ValueError("Number of channels must be positive")
+        sample_count = np.ceil(duration * sampling_rate)
+        start_sample = np.ceil(start_offset * sampling_rate)
+        return self.sample_samples(
+            int(sample_count), sampling_rate, int(start_sample), channels
         )
 
     @override
